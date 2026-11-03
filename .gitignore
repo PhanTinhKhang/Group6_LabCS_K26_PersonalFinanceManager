@@ -1,68 +1,103 @@
-# Prerequisites
+# ====================================================================
+# TIỀN ĐỀ VÀ CÁC CẤU HÌNH PHỤ THUỘC (PREREQUISITES & DEPENDENCIES)
+# ====================================================================
 *.d
+vcpkg_installed/
 
-# Compiled Object files
+# ====================================================================
+# FILE BIÊN DỊCH & ĐỐI TƯỢNG (COMPILED OBJECT FILES & HEADERS)
+# ====================================================================
 *.slo
 *.lo
 *.o
 *.obj
-
-# Precompiled Headers
 *.gch
 *.pch
+*.mod
+*.smod
 
-# Linker files
+# ====================================================================
+# THƯ VIỆN & CÁC FILE LIÊN KẾT (LIBRARIES & LINKER/DEBUGGER FILES)
+# ====================================================================
 *.ilk
-
-# Debugger Files
 *.pdb
-
-# Compiled Dynamic libraries
+*.dwo
 *.so
 *.dylib
 *.dll
 *.so.*
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
 *.lai
 *.la
 *.a
 *.lib
 
-# Executables
+# ====================================================================
+# FILE THỰC THI & SẢN PHẨM SAU KHI BUILD (EXECUTABLES & BUILD DIRECTORIES)
+# ====================================================================
 *.exe
 *.out
 *.app
-
-# Build directories
 build/
 Build/
 build-*/
 
-# CMake generated files
+# ====================================================================
+# HỆ THỐNG BIÊN DỊCH CMAKE & MAKE (CMAKE GENERATED FILES)
+# ====================================================================
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
 install_manifest.txt
 compile_commands.json
+Testing/
 
-# Temporary files
+# ====================================================================
+# TỆP TẠM THỜI & NHẬT KÝ (TEMPORARY FILES, LOGS & CACHE)
+# ====================================================================
 *.tmp
 *.log
 *.bak
 *.swp
-
-# vcpkg
-vcpkg_installed/
-
-# debug information files
-*.dwo
-
-# test output & cache
-Testing/
 .cache/
+
+# ====================================================================
+# CẤU HÌNH IDE PHỔ BIẾN (DÀNH CHO DỰ ÁN NHÓM)
+# ====================================================================
+# Microsoft Visual Studio
+.vs/
+*.user
+*.suo
+*.sln
+*.vcxproj
+*.filters
+x64/
+x86/
+ARM/
+ARM64/
+Debug/
+Release/
+
+# JetBrains CLion
+.idea/
+cmake-build-debug/
+cmake-build-release/
+
+# Visual Studio Code (Giữ lại các thiết lập chạy chung cho nhóm nếu cần)
+.vscode/
+#!.vscode/settings.json
+#!.vscode/tasks.json
+#!.vscode/launch.json
+
+# Xcode (Dành cho thành viên dùng macOS)
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.xcworkspace/
+
+# ====================================================================
+# HỆ ĐIỀU HÀNH & BẢO MẬT (OS TRASH & SECURITY)
+# ====================================================================
+.DS_Store
+Thumbs.db
+.env

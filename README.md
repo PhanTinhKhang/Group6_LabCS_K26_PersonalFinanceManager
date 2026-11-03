@@ -6,3 +6,7 @@ Members:
 - Lâm Thanh Phúc _ 26125059
 - Trương Vĩnh Thọ _ 26125079
 - Nguyễn Quốc Thịnh _ 25125066
+
+Group worksheet: https://docs.google.com/spreadsheets/d/1jqFSrempBFxhX2pmH_17IFbCTDrPVhZWFDCncCvEAeQ/edit?gid=0#gid=0
+
+Project github repo: https://github.com/PhanTinhKhang/Group6_LabCS_K26_PersonalFinanceManager
