@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "dynamicArray.h"
+#include "../include/DynamicArray.h"
 using namespace std;
 
 int main(){
