@@ -1,6 +1,7 @@
 #ifndef RECURRINGTRANSACTION_H
 #define RECURRINGTRANSACTION_H
 
+#include "dynamicArray.h"
 #include<bits/stdc++.h>
 
 enum TransactionType{
@@ -43,6 +44,6 @@ public:
         amount = amt;
     }
 };
-
+void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list);
 
 #endif

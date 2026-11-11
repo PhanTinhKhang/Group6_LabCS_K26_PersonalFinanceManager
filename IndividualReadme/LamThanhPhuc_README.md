@@ -1,59 +1,69 @@
-# TASK COMPLETION REPORT
+# Personal Contribution & Weekly Log
 
-**Course:** Introduction to Programming  
-**Project:** Personal Finance Manager (C++)  
-**Assigned Task:** Define `RecurringTransaction` Entity & Create Unit Test Suite  
-**Assignee:** Lam Thanh Phuc  
+* **Student Name:** Lâm Thanh Phúc
 
----
+* **Course:** Introduction to Computer Science (CS160) - APCS - HCMUS
 
-## I. SUMMARY OF COMPLETED WORK
+* **Project:** Personal Finance Manager (C++)
 
-In this project, I was responsible for implementing and testing the **`RecurringTransaction`** module. This module is essential for handling recurring financial entries (e.g., monthly rent, salary, internet subscriptions) that automatically recur over a specified timeframe.
+* **Repository:** Group6_LabCS_K26_PersonalFinanceManager
 
-### Key Contributions:
-1. **Designed the `RecurringTransaction` Data Model**: Built an encapsulated class structure conforming to standard object-oriented programming (OOP) principles.
-2. **Implemented Immutability & Data Safeguards**: Restricted direct setters to dynamic attributes (`lastAppliedMonth`, `amount`) while protecting identity and structural properties via constructor initialization.
-3. **Developed Automated Unit Tests**: Created a standalone unit testing framework using `<cassert>` to verify entity initialization and property updates.
+## Weekly Activity Logs
 
----
+### Week 1: Core Entity Definition (`RecurringTransaction`) & Automated Unit Testing
 
-## II. INTERACTED & CREATED FILES
+* **Branch:** `feature/RecurringTransaction`
 
-| File Path | Description |
-| :--- | :--- |
-| `include/RecurringTransaction.h` | Class definition for `RecurringTransaction`. |
-| `test_recurringtransaction(getter,setter).cpp` | Testing getter and setter functions.  |
+#### Tasks Completed:
 
----
+* \[x\] **`RecurringTransaction` Entity Implementation (Task 1):**
 
-## III. TECHNICAL SPECIFICATIONS (`RecurringTransaction.h`)
+  * Designed and implemented the encapsulated `RecurringTransaction` class inside `include/RecurringTransaction.h`.
 
-The `RecurringTransaction` class incorporates the following member attributes:
+  * Defined the `TransactionType` enumeration with values `Income = 1` and `Expense = 2`.
 
-* **`id` (`int`)**: Primary identifier for the transaction record.
-* **`type` (`TransactionType`)**: Enum type (`Income = 1`, `Expense = 2`) ensuring semantic clarity instead of raw numerical constants.
-* **`sourceOrCatId` (`std::string`)**: References the specific `SourceID` (for income) or `CategoryID` (for expenses).
-* **`walletId` (`std::string`)**: Identifies the destination/source `WalletID`.
-* **`amount` (`double`)**: The monetary value of the transaction.
-* **`startDate` (`std::string`)**: Effective start date of the recurring rule.
-* **`endDate` (`std::string`)**: Expiration date (optional/empty string if ongoing).
-* **`lastAppliedMonth` (`std::string`)**: Stores the most recent processed month (e.g., `"10/2026"`). Prevents duplicate applications when launching the app multiple times in the same monthly cycle.
-* **`description` (`std::string`)**: Notes associated with the transaction.
+  * Applied explicit member initialization lists in both default constructor (`id(0)`, `type(Expense)`, `amount(0.0)`) and parameterized constructor.
 
-### Encapsulation & Mutability Policy:
-* **Constructors**: All structural fields (`id`, `type`, `sourceOrCatId`, `walletId`, `startDate`, `endDate`, `description`) are initialized via constructor and kept immutable to protect financial audit integrity.
-* **Setters Provided**: Only `setLastAppliedMonth()` and `setAmount()` are exposed, allowing necessary state updates during execution.
+  * Enforced financial data integrity through immutable structural getters (`getId`, `getType`, `getSourceOrCatId`, `getWalletId`, `getStartDate`, `getEndDate`, `getDescription`).
 
+  * Exposed restricted mutation methods (`setLastAppliedMonth`, `setAmount`) to allow monthly execution tracking and variable amount updates.
 
----
+* \[x\] **Unit Testing with `assert` (Task 2):**
 
-## V. COMPLIANCE WITH PROJECT RULES
+  * Built comprehensive tests using `<cassert>` to validate getters and setters.
 
-* **No STL Containers**: Implemented without reliance on `std::vector` or `std::map`.
-* **Modular Header-Only Definition**: Kept inside `Recurring.h` to minimize merge conflicts across team branches on Git.
-* **Standard OOP Encapsulation**: Data members remain `private`, exposing only essential getters/setters.
+#### Key Commits / PRs:
 
----
+* `define RecurringTransaction and testing`
 
-**Date of Completion:** November 04, 2026  
+### Week 2: Transaction Table Display & ID-to-Name Mapping
+
+* **Branch:** `feature/RecurringTransaction`
+
+#### Tasks Completed:
+
+* \[x\] **Linear Master Data Lookup (Task 1):**
+
+  * Resolved internal foreign keys (`sourceOrCatId`, `walletId`) into human-readable master data names (`Name`).
+
+  * Implemented safe fallback responses (e.g., `"Unknown Category"`) for unmapped IDs.
+
+* \[x\] **Formatted Console Table Output (Task 2):**
+
+  * Mapped raw transaction entity IDs to translated Names in real-time during table iteration.
+
+  * Formatted headers, column boundaries, and decimal precision for currency alignment.
+
+#### Key Commits / PRs:
+
+* `feat: implement recurring transaction table printing with ID-to-Name mapping`
+
+## Cumulative Contributions & File Registry
+
+| File / Component | Type | Responsibility / Description | 
+| ----- | ----- | ----- | 
+| `include/RecurringTransaction.h` | Header | Declaration and inline definition of `RecurringTransaction` class & `TransactionType` enum | 
+| `test/test_recurringtransaction(getter,setter).cpp` | Test Source | Verifying getters and setters using `assert` | 
+| `src/TransactionList.cpp` | Source | Printing formatted transactions list with ID-to-Name mapping  | 
+| `test/test_transactionlist.cpp` | Test Source | Testing new features | 
+| `IndividualReadme/Weekly_Log.md` | Documentation | Personal weekly progress log and milestone tracker | 
