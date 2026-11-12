@@ -10,16 +10,17 @@ private:
     string NAME;
 
 public:
+    IncomeSource() : ID(0), NAME("") {}
     IncomeSource(int ID, string NAME)
     {
         this->ID = ID;
         this->NAME = NAME;
     }
-    int get_id()
+    int get_id() const
     {
         return this->ID;
     }
-    string get_name()
+    string get_name() const
     {
         return this->NAME;
     }
@@ -29,7 +30,7 @@ public:
     }
 };
 
-void print(IncomeSource item)
+inline void print(IncomeSource item)
 {
     cout << item.get_id() << " " << item.get_name() << '\n';
 }
