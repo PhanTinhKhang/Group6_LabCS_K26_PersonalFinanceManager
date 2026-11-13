@@ -32,6 +32,27 @@ class DynamicArray{
         delete[] data;
     }
 
+    // Copy Constructor
+    DynamicArray(const DynamicArray& other) : capacity(other.capacity), size(other.size) {
+        data = new T[capacity];
+        for (int i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+    }
+
+    // Copy Assignment Operator
+    DynamicArray& operator=(const DynamicArray& other) {
+        if (this == &other) return *this;
+        delete[] data;
+        capacity = other.capacity;
+        size = other.size;
+        data = new T[capacity];
+        for (int i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+        return *this;
+    }
+
     T& operator[](int index){
         return data[index];
     }

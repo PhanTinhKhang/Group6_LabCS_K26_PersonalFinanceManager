@@ -1,6 +1,6 @@
 #ifndef IncomeSource_H
 #define IncomeSource_H
-#include "dynamicArray.h"
+#include "DynamicArray.h"
 #include <bits/stdc++.h>
 using namespace std;
 

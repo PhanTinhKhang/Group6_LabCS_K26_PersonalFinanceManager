@@ -1,5 +1,5 @@
 #include "../include/RecurringTransaction.h"
-#include "../include/dynamicArray.h"
+#include "../include/DynamicArray.h"
 #include <iostream>
 #include <iomanip>
 #include <string>

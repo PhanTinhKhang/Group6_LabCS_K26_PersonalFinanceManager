@@ -1,4 +1,4 @@
-#include "../include/dynamicArray.h"
+#include "../include/DynamicArray.h"
 #include "../include/ExpenseCategory.h"
 #include <string>
 

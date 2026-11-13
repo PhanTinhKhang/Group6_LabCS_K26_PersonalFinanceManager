@@ -1,12 +1,9 @@
 #ifndef RECURRINGTRANSACTION_H
 #define RECURRINGTRANSACTION_H
 
-#include "dynamicArray.h"
+#include "DynamicArray.h"
 #include<bits/stdc++.h>
-
-enum TransactionType{
-    Income=1, Expense=2
-};
+#include "Transaction.h"
 
 class RecurringTransaction{
 private:

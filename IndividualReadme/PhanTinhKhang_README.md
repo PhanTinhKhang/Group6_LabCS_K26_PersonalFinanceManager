@@ -44,13 +44,41 @@
 
 ---
 
+### Week 2: Wallet Management (CRUD), Header Integration Fixes & Main Entrypoint Setup
+* **Branch:** `main`
+
+#### Tasks Completed:
+- [x] **Wallet Management CRUD & Balance Aggregation (Task 10):**
+  - Declared and implemented `findWalletIndexById()`, `createWallet()`, `editWalletName()`, `deleteWallet()`, `viewWallets()`, `getTotalBalance()`, and `getWalletNameById()` in `include/Wallet.h` and `src/Wallet.cpp`.
+  - Enforced input validation on wallet creation and renaming (non-empty ID/name, non-negative initial balance, duplicate ID prevention).
+  - Moved `printWallet()` definition from `include/Wallet.h` into `src/Wallet.cpp` to prevent multiple-definition linker errors.
+  - Built unit test suite in `test/test_wallet_crud.cpp` verifying empty state, validation rules, renaming, deletion, and total balance calculation.
+- [x] **Cross-Module Integration & Header Fixes:**
+  - Implemented deep-copy Copy Constructor and Copy Assignment `operator=` in `include/DynamicArray.h` (Rule of Three) to prevent shallow-copy double-free crashes.
+  - Resolved `enum TransactionType` redeclaration by removing the duplicate definition in `include/RecurringTransaction.h` and including `Transaction.h`.
+  - Separated `printTrans()` definition from `include/Transaction.h` into `src/Transaction.cpp` to eliminate multiple-definition linker errors.
+  - Fixed case-sensitive `#include "DynamicArray.h"` across headers and sources (`include/ExpenseCategory.h`, `include/IncomeSource.h`, `include/RecurringTransaction.h`, `src/ExpenseCategory.cpp`, `src/IncomeSource.cpp`, `src/TransactionList.cpp`).
+  - Updated `src/main.cpp` to include all core module headers and declare the main `DynamicArray` containers (`wallets`, `categories`, `sources`, `transactions`, `recurringList`).
+
+#### Key Commits / PRs:
+* `feat: implement Wallet CRUD management and getTotalBalance`
+* `fix: resolve header linker errors, DynamicArray Rule of Three, and include casing`
+* `docs: update main entrypoint containers and personal weekly log`
+
+---
+
 ## Cumulative Contributions & File Registry
 
 | File / Component | Type | Responsibility / Description |
 | :--- | :--- | :--- |
-| `include/DynamicArray.h` | Header (Template) | Custom generic dynamic array engine (non-STL) |
+| `include/DynamicArray.h` | Header (Template) | Custom generic dynamic array engine (non-STL) with Rule of Three |
 | `test/test_dynamicarray01.cpp` | Test Source | Unit tests for dynamic array operations |
 | `include/Date.h` | Header | Declaration of encapsulated `Date` class & utilities |
 | `src/Date.cpp` | Source | Implementation of calendar logic, validation, comparisons, and parsing |
 | `test/test_date_full.cpp` | Test Source | Complete test suite for `Date` and `DynamicArray<Date>` integration |
+| `include/Wallet.h` | Header | Wallet entity & CRUD function declarations |
+| `src/Wallet.cpp` | Source | Implementation of Wallet CRUD, `getTotalBalance()`, and table formatting |
+| `test/test_wallet_crud.cpp` | Test Source | Unit tests for Wallet CRUD operations and edge cases |
+| `src/Transaction.cpp` | Source | Implementation of `printTrans()` separated from `Transaction.h` |
+| `src/main.cpp` | Source | Main entrypoint integrating all headers and primary `DynamicArray` containers |
 | `IndividualReadme/PhanTinhKhang_README.md` | Documentation | Personal weekly log and milestone tracker |
