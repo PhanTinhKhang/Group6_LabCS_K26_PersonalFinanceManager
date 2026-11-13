@@ -4,6 +4,12 @@ LTPhuc1807: Lâm Thanh Phúc _ 26125059
 TruongVinhTho: Trương Vĩnh Thọ _ 26125079
 thinh-nguyen-007: Nguyễn Quốc Thịnh _ 25125066
 
+commit f253fd7ebea53017fd6da247fa9bffeccd586863
+Author: thinh-nguyen-007 <thinhnguyenctg2007@gmail.com>
+Date:   Fri Nov 13 21:50:52 2026 +0700
+
+    Add reports for Week 06
+
 commit dcd83f2a232b837229eb0a31aa634289dd0c177c
 Author: mNguyen5508 <nphminh2610@apcs.fitus.edu.vn>
 Date:   Fri Nov 13 20:17:55 2026 +0700
@@ -81,3 +87,81 @@ Author: PhanTinhKhang <phantinhkhang06@gmail.com>
 Date:   Sat Nov 7 00:14:57 2026 +0700
 
     Add submission guidelines and comprehensive tests for Date class
+
+commit 76fd0d8c1907d167b86cb77c44b8b307ed2aaf4f
+Author: PhanTinhKhang <phantinhkhang06@gmail.com>
+Date:   Fri Nov 6 23:09:51 2026 +0700
+
+    implement Date class with basic functionality and methods
+
+commit 155620a94e31dda68e5376fb11191ad2322eca9d
+Author: thinh-nguyen-007 <thinhnguyenctg2007@gmail.com>
+Date:   Thu Nov 5 19:51:06 2026 +0700
+
+    Merge pull request #2 from PhanTinhKhang/feature/Wallet_Transaction
+
+commit 52025e5116deef9c79d2c64b3716eb1d71e94f20
+Author: thinh-nguyen-007 <thinhnguyenctg2007@gmail.com>
+Date:   Thu Nov 5 19:50:36 2026 +0700
+
+    Merge pull request #3 from PhanTinhKhang/feature/Dashboard_UI
+
+commit beba6cede6ddc7cbcdbd59d7f1d8de1ca155a4cf
+Author: thinh-nguyen-007 <thinhnguyenctg2007@gmail.com>
+Date:   Thu Nov 5 19:48:46 2026 +0700
+
+    feat(ui-planning): establish CLI dashboard specification and team Git workflow guidelines
+
+commit caa653df7d622288d07d5cf24cb7a7c7cfa6f526
+Author: mNguyen5508 <nphminh2610@apcs.fitus.edu.vn>
+Date:   Thu Nov 5 11:25:23 2026 +0700
+
+    Wallet and Transaction headers, Test and Report
+
+commit aca46d7b7631778abda6635065959106b728e637
+Author: TruongVinhTho <truongvinhtho205@gmail.com>
+Date:   Wed Nov 4 17:20:15 2026 +0700
+
+    Create and add basic function for ExpenseCategory.h and IncomeSource.h
+
+commit 23547650f2f79803fe2f8dcb111b632c82da6aac
+Author: LTPhuc1807 <lamthanhphuc18072008@gmail.com>
+Date:   Wed Nov 4 13:51:07 2026 +0700
+
+    Merge pull request #1 from PhanTinhKhang/feature/RecurringTransaction
+
+commit d0d35d461dd899267f0c44b23f6e4fb010f71f77
+Author: LTPhuc1807 <lamthanhphuc18072008@gmail.com>
+Date:   Wed Nov 4 08:33:35 2026 +0700
+
+    define RecurringTransaction and testing
+
+commit ae21ad13c2928dc44e99b2810f4487faabe9ea13
+Author: PhanTinhKhang <phantinhkhang06@gmail.com>
+Date:   Wed Nov 4 02:30:27 2026 +0700
+
+    Init repository tree and .gitignore
+
+commit b73ebba2f87810f0d61568fa95f91c8bede01c6c
+Author: PhanTinhKhang <phantinhkhang06@gmail.com>
+Date:   Tue Nov 3 23:30:21 2026 +0700
+
+    Initilize repo and project structure, begin developing dynamic array class
+
+commit f6db428eae09621cb7a85979f700105cb9820599
+Author: mNguyen5508 <nphminh2610@apcs.fitus.edu.vn>
+Date:   Tue Nov 3 22:54:46 2026 +0700
+
+    init project
+
+commit ad6bb7e87c75e9fe6182765337e692acf8ff2778
+Author: PhanTinhKhang <phantinhkhang06@gmail.com>
+Date:   Sun Oct 25 12:23:30 2026 +0700
+
+    Update README with team member information
+
+commit 19bc228bd845b4d8fb29240ecfc482d870cee1bb
+Author: PhanTinhKhang <phantinhkhang06@gmail.com>
+Date:   Sun Oct 25 12:19:22 2026 +0700
+
+    Initial commit
