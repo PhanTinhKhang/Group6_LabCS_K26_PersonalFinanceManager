@@ -1,5 +1,6 @@
 #ifndef ExpenseCategory_H
 #define ExpenseCategory_H
+#include "dynamicArray.h"
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,16 +11,18 @@ private:
     string NAME;
 
 public:
+    ExpenseCategory() : ID(0), NAME("") {}
+
     ExpenseCategory(int ID, string NAME)
     {
         this->ID = ID;
         this->NAME = NAME;
     }
-    int get_id()
+    int get_id() const
     {
         return this->ID;
     }
-    string get_name()
+    string get_name() const
     {
         return this->NAME;
     }
@@ -29,9 +32,20 @@ public:
     }
 };
 
-void print(ExpenseCategory item)
-{
-    cout << item.get_id() << " " << item.get_name() << '\n';
-}
+void set_name(ExpenseCategory &item);
+
+bool operator<(ExpenseCategory item1, ExpenseCategory item2);
+
+bool search(int ID, DynamicArray<ExpenseCategory> &storage, int &idx);
+
+void print(ExpenseCategory item);
+
+void add(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
+
+void del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
+
+void view(DynamicArray<ExpenseCategory> &storage);
+
+string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage);
 
 #endif
