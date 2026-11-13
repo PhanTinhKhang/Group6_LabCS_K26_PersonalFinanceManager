@@ -33,7 +33,7 @@ class Wallet {
     }
 };
 
-void printWallet(const Wallet& item) {
+inline void printWallet(const Wallet& item) {
     std::cout << std::fixed << std::setprecision(2);
     std::cout << item.get_ID() << " " << item.get_NAME() << " " << std::fixed << item.get_BALANCE() << "\n";
 }
