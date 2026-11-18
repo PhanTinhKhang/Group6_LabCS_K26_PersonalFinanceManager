@@ -1,5 +1,6 @@
 #include "../include/RecurringTransaction.h"
-#include "../include/dynamicArray.h"
+#include "../include/DynamicArray.h"
+#include "../include/Date.h"
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -7,9 +8,9 @@ using namespace std;
 int main() {
     DynamicArray<RecurringTransaction> recurringList;
 
-    recurringList.push(RecurringTransaction(101, Expense, "C02", "W01", 3500000.0, "01/10/2026", "", "10/2026", "Tien thue nha"));
-    recurringList.push(RecurringTransaction(102, Income, "S01", "W01", 15000000.0, "05/10/2026", "", "10/2026", "Luong thang 10"));
-    recurringList.push(RecurringTransaction(103, Expense, "C01", "W03", 250000.0, "10/10/2026", "", "", "Goi cuoc internet"));
+    recurringList.push(RecurringTransaction(101, Expense, "C02", "W01", 3500000.0, Date(1,10,2026), Date(), "10/2026", "Tien thue nha"));
+    recurringList.push(RecurringTransaction(102, Income, "S01", "W01", 15000000.0, Date(5,10,2026), Date(), "10/2026", "Luong thang 10"));
+    recurringList.push(RecurringTransaction(103, Expense, "C01", "W03", 250000.0, Date(10,10,2026), Date(), "", "Goi cuoc internet"));
 
     printRecurringTransactionsTable(recurringList);
     return 0;
