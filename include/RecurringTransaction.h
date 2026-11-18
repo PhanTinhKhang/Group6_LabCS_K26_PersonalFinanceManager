@@ -2,6 +2,9 @@
 #define RECURRINGTRANSACTION_H
 
 #include "DynamicArray.h"
+#include "Date.h"
+#include "Wallet.h"
+#include "Transaction.h"
 #include<bits/stdc++.h>
 #include "Transaction.h"
 
@@ -12,15 +15,15 @@ private:
     std::string sourceOrCatId;
     std::string walletId;
     double amount;
-    std::string startDate;
-    std::string endDate;
+    Date startDate;
+    Date endDate;
     std::string lastAppliedMonth;
     std::string description;
 public:
     RecurringTransaction(): id(0), type(Expense), amount(0.0){}
     RecurringTransaction(int id, TransactionType type, std::string srcCatId,
-                        std::string walletId, double amount, std::string start,
-                        std::string end, std::string lastApplied, std::string desc)
+                        std::string walletId, double amount, Date start,
+                        Date end, std::string lastApplied, std::string desc)
                 :id(id), type(type), sourceOrCatId(srcCatId), walletId(walletId), amount(amount),
                 startDate(start), endDate(end), lastAppliedMonth(lastApplied), description(desc){}
 
@@ -29,8 +32,8 @@ public:
     std::string getSourceOrCatId() const { return sourceOrCatId; }
     std::string getWalletId() const { return walletId; }
     double getAmount() const { return amount; }
-    std::string getStartDate() const { return startDate; }
-    std::string getEndDate() const { return endDate; }
+    Date getStartDate() const { return startDate; }
+    Date getEndDate() const { return endDate; }
     std::string getLastAppliedMonth() const { return lastAppliedMonth; }
     std::string getDescription() const { return description; }
 
@@ -42,5 +45,10 @@ public:
     }
 };
 void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list);
+void processRecurringTransactions(
+    DynamicArray<RecurringTransaction>& recurringList,
+    DynamicArray<Transaction>& transactions,
+    DynamicArray<Wallet>& wallets
+);
 
 #endif

@@ -1,5 +1,6 @@
 #include "../include/RecurringTransaction.h"
 #include "../include/DynamicArray.h"
+#include "../include/Date.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -75,7 +76,7 @@ void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list) {
                   << std::setw(22) << catName
                   << std::setw(20) << walletName
                   << std::setw(15) << std::fixed << std::setprecision(0) << tx.getAmount()
-                  << std::setw(14) << tx.getStartDate()
+                  << std::setw(14) << tx.getStartDate().toString()
                   << std::setw(14) << (tx.getLastAppliedMonth().empty() ? "N/A" : tx.getLastAppliedMonth())
                   << std::setw(25) << tx.getDescription()
                   << "\n";
