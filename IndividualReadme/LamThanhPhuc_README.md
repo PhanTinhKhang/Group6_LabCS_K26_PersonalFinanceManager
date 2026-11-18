@@ -58,12 +58,52 @@
 
 * `feat: implement recurring transaction table printing with ID-to-Name mapping`
 
+### Week 3: Automated Recurring Transaction Engine & Lifecycle Processing
+
+* **Branch:** `feature/RecurringTransaction`
+
+#### Tasks Completed:
+
+* \[x\] **Entity Refactoring to Typed `Date` (Task 1):**
+
+  * Migrated `startDate` and `endDate` members in `RecurringTransaction` from raw `std::string` to encapsulated `Date` objects.
+
+  * Updated constructors, getters, and table display formatting in `src/TransactionList.cpp` to call `Date::toString()`.
+
+* \[x\] **Automated Startup Cycle Verification & Execution (Task 2):**
+
+  * Designed and implemented `processRecurringTransactions()` in `src/RecurringManager.cpp`.
+
+  * Integrated system clock resolution via `<ctime>` (`localtime`) to dynamically determine the active monthly cycle (`MM/YYYY`).
+
+  * Enforced cycle idempotency: compared `lastAppliedMonth` against the active cycle string to strictly prevent duplicate transaction posting on repeated app startups.
+
+  * Implemented lifecycle boundary evaluation: checked `StartDate` activation and optional `EndDate` expiration via `hasValidEndDate()`.
+
+  * Managed account balance mutations: credited wallet balance via `Deposit()` for Income; debited balance via `Withdrawal()` for Expense with insufficient funds checks.
+
+  * Synthesized executed transaction records and appended them into `DynamicArray<Transaction>&` while updating `lastAppliedMonth`.
+
+* \[x\] **Automated Lifecycle Unit Testing (Task 3):**
+
+  * Engineered a comprehensive unit test suite in `test/test_recurring_manager.cpp` utilizing `<cassert>`.
+
+  * Validated full execution lifecycle: initial execution, multi-wallet balance synchronization, insufficient balance rejection, active cycle duplicate suppression, and boundary date filtering.
+
+#### Key Commits / PRs:
+
+* `feat: migrate RecurringTransaction to use Date class for start and end dates`
+* `feat: implement processRecurringTransactions engine with duplicate prevention and wallet updates`
+* `test: add comprehensive automated unit test suite for RecurringManager`
+
 ## Cumulative Contributions & File Registry
 
 | File / Component | Type | Responsibility / Description | 
 | ----- | ----- | ----- | 
-| `include/RecurringTransaction.h` | Header | Declaration and inline definition of `RecurringTransaction` class & `TransactionType` enum | 
+| `include/RecurringTransaction.h` | Header | Declaration and inline definition of `RecurringTransaction` class & `processRecurringTransactions` prototype | 
 | `test/test_recurringtransaction(getter,setter).cpp` | Test Source | Verifying getters and setters using `assert` | 
 | `src/TransactionList.cpp` | Source | Printing formatted transactions list with ID-to-Name mapping  | 
-| `test/test_transactionlist.cpp` | Test Source | Testing new features | 
-| `IndividualReadme/Weekly_Log.md` | Documentation | Personal weekly progress log and milestone tracker | 
+| `test/test_transactionlist.cpp` | Test Source | Testing formatted recurring transactions table printing | 
+| `src/RecurringManager.cpp` | Source | Automated recurring transaction processing engine on startup | 
+| `test/test_recurring_manager.cpp` | Test Source | Automated unit testing for recurring transactions execution and duplicate prevention | 
+| `IndividualReadme/LamThanhPhuc_README.md` | Documentation | Personal weekly progress log and milestone tracker | 
