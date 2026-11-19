@@ -3,7 +3,7 @@
 
 #include <string>
 #include "Wallet.h"
-#include "dynamicArray.h"
+#include "DynamicArray.h"
 
 enum class MenuAction {
     EXIT = 0,

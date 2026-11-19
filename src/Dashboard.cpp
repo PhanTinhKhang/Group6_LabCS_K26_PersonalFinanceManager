@@ -72,7 +72,7 @@ void renderDashboard(DynamicArray<Wallet>& wallets) {
     } else {
         for (int i = 0; i < count; ++i) {
             std::string numStr = (i + 1 < 10 ? "0" : "") + std::to_string(i + 1);
-            std::string idStr = wallets[i].get_ID();
+            std::string idStr = std::to_string(wallets[i].get_ID());
             std::string nameStr = wallets[i].get_NAME();
             std::string balanceStr = formatCurrency(wallets[i].get_BALANCE());
 

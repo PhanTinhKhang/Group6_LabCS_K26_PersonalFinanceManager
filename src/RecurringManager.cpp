@@ -73,7 +73,7 @@ void processRecurringTransactions(
             Date txDate(txDay, currentMonth, currentYear);
             transactions.push(Transaction(
                 tx.getType(),
-                txDate.toString(),
+                txDate,
                 tx.getSourceOrCatId(),
                 tx.getAmount(),
                 tx.getWalletId(),

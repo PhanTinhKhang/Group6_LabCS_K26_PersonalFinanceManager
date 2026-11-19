@@ -5,15 +5,15 @@
 #include "Date.h"
 #include "Wallet.h"
 #include "Transaction.h"
-#include<bits/stdc++.h>
-#include "Transaction.h"
+#include <bits/stdc++.h>
+
 
 class RecurringTransaction{
 private:
     int id;
     TransactionType type;
-    std::string sourceOrCatId;
-    std::string walletId;
+    int sourceOrCatId;
+    int walletId;
     double amount;
     Date startDate;
     Date endDate;
@@ -21,16 +21,16 @@ private:
     std::string description;
 public:
     RecurringTransaction(): id(0), type(Expense), amount(0.0){}
-    RecurringTransaction(int id, TransactionType type, std::string srcCatId,
-                        std::string walletId, double amount, Date start,
+    RecurringTransaction(int id, TransactionType type, int srcCatId,
+                        int walletId, double amount, Date start,
                         Date end, std::string lastApplied, std::string desc)
                 :id(id), type(type), sourceOrCatId(srcCatId), walletId(walletId), amount(amount),
                 startDate(start), endDate(end), lastAppliedMonth(lastApplied), description(desc){}
 
     int getId() const { return id; }
     TransactionType getType() const { return type; }
-    std::string getSourceOrCatId() const { return sourceOrCatId; }
-    std::string getWalletId() const { return walletId; }
+    int getSourceOrCatId() const { return sourceOrCatId; }
+    int getWalletId() const { return walletId; }
     double getAmount() const { return amount; }
     Date getStartDate() const { return startDate; }
     Date getEndDate() const { return endDate; }

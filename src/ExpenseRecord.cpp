@@ -1,19 +1,19 @@
 #include "../include/ExpenseRecord.h"
 
-void inputExpense(std::string &date, std::string &CateId, double &Amount, 
-    std::string &walletId,std::string &desc){
+void inputExpense(std::string &date, int &CateId, double &Amount, 
+    int &walletId,std::string &desc){
         std::cout <<"----------Expense Record----------\n";
         std::cout <<"Date: "; std::getline(std::cin, date);
         std::cout <<"CategoryId: "; std::cin >> CateId;
         std::cout <<"Amount: "; std::cin  >> Amount;
         std::cout <<"WalletID: "; std::cin >> walletId;
-        std::cin.ignore();
+        std::cin.ignore(10000, '\n');
         std::cout <<"Description: "; std::getline(std::cin,desc);
 }
 
 bool addExpense(DynamicArray<Wallet> &wallets, DynamicArray<ExpenseCategory> &expenses,
-    DynamicArray<Transaction> &transaction, const std::string &date, const std::string &walletId,
-    const std::string &ExpenseId,double Amount, const std::string &desc){
+    DynamicArray<Transaction> &transaction, const std::string &date, 
+    const int &ExpenseId,double Amount, const int &walletId,const std::string &desc){
     if(date.size() != 10 || date[2] != '/' || date[5] != '/') return false;
     for(int i=0; i < 10;i++) {
         if(i==2 || i==5) continue;
@@ -38,20 +38,17 @@ bool addExpense(DynamicArray<Wallet> &wallets, DynamicArray<ExpenseCategory> &ex
     }
     if(id == -1) return false;
 
-    if(ExpenseId.empty() || ExpenseId.size() > 9) return false;
-    for(int i = 0; i < ExpenseId.size();i++) {
-        if(ExpenseId[i] < '0' || ExpenseId[i] > '9') return false;
-    }
+    if (ExpenseId <= 0) return false;
     bool FindExpenseSource = false;
-    for(int i = 0; i < expenses.getSize();i++) {
-        if(expenses[i].get_id() == std::stoi(ExpenseId)) {
+    for (int i = 0; i < expenses.getSize(); i++) {
+        if (expenses[i].get_id() == ExpenseId) {
             FindExpenseSource = true;
             break;
         }
     }
-    if(!FindExpenseSource) return false;
+    if (!FindExpenseSource) return false;
 
     if(!wallets[id].Withdrawal(Amount)) return false;
-    transaction.push(Transaction(Expense, date, ExpenseId, Amount, walletId,desc));
+    transaction.push(Transaction(Expense, dt, ExpenseId, Amount, walletId,desc));
     return true;
 }

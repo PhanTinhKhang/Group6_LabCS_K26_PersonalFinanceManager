@@ -10,7 +10,7 @@ void printWallet(const Wallet& item) {
     cout << item.get_ID() << " " << item.get_NAME() << " " << item.get_BALANCE() << "\n";
 }
 
-int findWalletIndexById(const string& id, DynamicArray<Wallet>& wallets) {
+int findWalletIndexById(const int& id, DynamicArray<Wallet>& wallets) {
     int sz = wallets.getSize();
     for (int i = 0; i < sz; ++i) {
         if (wallets[i].CheckID(id)) {
@@ -20,9 +20,13 @@ int findWalletIndexById(const string& id, DynamicArray<Wallet>& wallets) {
     return -1;
 }
 
-bool createWallet(DynamicArray<Wallet>& wallets, const string& id, const string& name, double initialBalance) {
-    if (id.empty() || name.empty()) {
-        cout << "Error: Wallet ID and Name cannot be empty.\n";
+bool createWallet(DynamicArray<Wallet>& wallets, const int& id, const string& name, double initialBalance) {
+    if (id <= 0) {
+        cout << "Error: Wallet ID must be a positive integer.\n";
+        return false;
+    }
+    if (name.empty()) {
+        cout << "Error: Wallet Name cannot be empty.\n";
         return false;
     }
 
@@ -40,7 +44,7 @@ bool createWallet(DynamicArray<Wallet>& wallets, const string& id, const string&
     return true;
 }
 
-bool editWalletName(DynamicArray<Wallet>& wallets, const string& id, const string& newName) {
+bool editWalletName(DynamicArray<Wallet>& wallets, const int& id, const string& newName) {
     if (newName.empty()) {
         cout << "Error: New wallet name cannot be empty.\n";
         return false;
@@ -56,7 +60,7 @@ bool editWalletName(DynamicArray<Wallet>& wallets, const string& id, const strin
     return true;
 }
 
-bool deleteWallet(DynamicArray<Wallet>& wallets, const string& id) {
+bool deleteWallet(DynamicArray<Wallet>& wallets, const int& id) {
     int idx = findWalletIndexById(id, wallets);
     if (idx == -1) {
         cout << "Error: Wallet ID '" << id << "' not found.\n";
@@ -103,7 +107,7 @@ double getTotalBalance(DynamicArray<Wallet>& wallets) {
     return total;
 }
 
-string getWalletNameById(const string& id, DynamicArray<Wallet>& wallets) {
+string getWalletNameById(const int& id, DynamicArray<Wallet>& wallets) {
     int idx = findWalletIndexById(id, wallets);
     if (idx != -1) {
         return wallets[idx].get_NAME();
