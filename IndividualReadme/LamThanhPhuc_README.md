@@ -95,6 +95,7 @@
 * `feat: migrate RecurringTransaction to use Date class for start and end dates`
 * `feat: implement processRecurringTransactions engine with duplicate prevention and wallet updates`
 * `test: add comprehensive automated unit test suite for RecurringManager`
+* `fix: fix TransactionList.cpp and testing`
 
 ## Cumulative Contributions & File Registry
 

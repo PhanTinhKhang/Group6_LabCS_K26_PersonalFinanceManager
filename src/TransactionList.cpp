@@ -1,50 +1,52 @@
 #include "../include/RecurringTransaction.h"
-#include "../include/DynamicArray.h"
-#include "../include/Date.h"
-#include <iostream>
-#include <iomanip>
-#include <string>
+#include<bits/stdc++.h>
 
-struct IdNamePair {
-    std::string id;
-    std::string name;
-};
-
-static const IdNamePair CATEGORY_SOURCE_MAP[] = {
-    {"C01", "Internet & Utilities"},
-    {"C02", "Housing / Rent"},
-    {"C03", "Communication"},
-    {"S01", "Salary / Main Job"},
-    {"S02", "Freelance & Bonus"}
-};
-static const int CATEGORY_SOURCE_MAP_SIZE = 5;
-
-static const IdNamePair WALLET_MAP[] = {
-    {"W01", "Techcombank Main"},
-    {"W02", "Cash Wallet"},
-    {"W03", "Momo E-Wallet"}
-};
-static const int WALLET_MAP_SIZE = 3;
-
-std::string getCategoryOrSourceName(const std::string& id) {
-    for (int i = 0; i < CATEGORY_SOURCE_MAP_SIZE; i++) {
-        if (CATEGORY_SOURCE_MAP[i].id == id) {
-            return CATEGORY_SOURCE_MAP[i].name;
-        }
+void printTransactionTable(
+    DynamicArray<Transaction>& list,
+    DynamicArray<Wallet>& wallets,
+    DynamicArray<ExpenseCategory>& categories,
+    DynamicArray<IncomeSource>& sources
+){
+    int size = list.getSize();
+    if (size <= 0) {
+        std::cout << "-> Danh sach giao dich trong!\n";
+        return;
     }
-    return "Unknown (" + id + ")";
+
+    std::cout << "\n========================================================================================================================\n";
+    std::cout << std::left 
+              << std::setw(6)  << "No." 
+              << std::setw(13)  << "Date"
+              << std::setw(10) << "Type"
+              << std::setw(22) << "Category/Source"
+              << std::setw(20) << "Wallet"
+              << std::right << std::setw(15) << "Amount (VND)"
+              << std::left  << " " << std::setw(25) << "Description"
+              << "\n========================================================================================================================\n";
+    for(int i=0; i<list.getSize(); i++){
+        const Transaction& tx= list[i];
+        std::string typeStr = (tx.get_TYPE() == Income) ? "INCOME" : "EXPENSE";
+        std::string catName = (typeStr=="INCOME") ? getSourceNameById(tx.get_SOURCE_OR_CATEGORY_ID(), sources) : getCategoryNameById(tx.get_SOURCE_OR_CATEGORY_ID(), categories);
+        std::string walletName = getWalletNameById(tx.get_WALLET(), wallets);
+
+        std::cout << std::left 
+                  << std::setw(6)  << i+1
+                  << std::setw(13)  << tx.get_DATE()
+                  << std::setw(10) << typeStr
+                  << std::setw(22) << catName
+                  << std::setw(20) << walletName
+                  << std::right << std::setw(15) << std::fixed << std::setprecision(0) << tx.get_AMOUNT()
+                  << std::left  << " " << std::setw(25) << tx.get_DESC()
+                  << "\n";
+    }
+    std::cout << "========================================================================================================================\n";
 }
 
-std::string getWalletName(const std::string& id) {
-    for (int i = 0; i < WALLET_MAP_SIZE; i++) {
-        if (WALLET_MAP[i].id == id) {
-            return WALLET_MAP[i].name;
-        }
-    }
-    return "Unknown (" + id + ")";
-}
 
-void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list) {
+void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list,
+    DynamicArray<Wallet>& wallets,
+    DynamicArray<ExpenseCategory>& categories,
+    DynamicArray<IncomeSource>& sources) {
     int size = list.getSize();
     if (size <= 0) {
         std::cout << "-> Danh sach giao dich dinh ky trong!\n";
@@ -67,8 +69,8 @@ void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list) {
         const RecurringTransaction& tx = list[i];
 
         std::string typeStr = (tx.getType() == Income) ? "INCOME" : "EXPENSE";
-        std::string catName = getCategoryOrSourceName(tx.getSourceOrCatId());
-        std::string walletName = getWalletName(tx.getWalletId());
+        std::string catName = (typeStr=="INCOME") ? getSourceNameById(tx.getSourceOrCatId(), sources) : getCategoryNameById(tx.getSourceOrCatId(), categories);
+        std::string walletName = getWalletNameById(tx.getWalletId(), wallets);
 
         std::cout << std::left 
                   << std::setw(6)  << tx.getId()

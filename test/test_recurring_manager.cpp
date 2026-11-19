@@ -14,15 +14,15 @@ int main() {
     cout << "========================================================\n";
 
     DynamicArray<Wallet> wallets;
-    wallets.push(Wallet("W01", "Techcombank Main", 5000000.0)); 
-    wallets.push(Wallet("W02", "Cash Wallet", 100000.0));       
+    wallets.push(Wallet(1, "Techcombank Main", 5000000.0)); 
+    wallets.push(Wallet(2, "Cash Wallet", 100000.0));       
     DynamicArray<Transaction> transactions;
     DynamicArray<RecurringTransaction> recurringList;
-    recurringList.push(RecurringTransaction(1, Income, "S01", "W01", 15000000.0, Date(1, 10, 2026), Date(), "10/2026", "Luong hang thang"));
-    recurringList.push(RecurringTransaction(2, Expense, "C02", "W01", 3500000.0, Date(1, 10, 2026), Date(31, 12, 2026), "10/2026", "Tien thue nha"));
-    recurringList.push(RecurringTransaction(3, Expense, "C01", "W02", 250000.0, Date(1, 10, 2026), Date(), "10/2026", "Goi cuoc internet"));
-    recurringList.push(RecurringTransaction(4, Expense, "C03", "W01", 500000.0, Date(1, 12, 2026), Date(), "", "Dang ky tap Gym"));
-    recurringList.push(RecurringTransaction(5, Expense, "C04", "W01", 200000.0, Date(1, 1, 2026), Date(30, 9, 2026), "09/2026", "Bao hiem xe"));
+    recurringList.push(RecurringTransaction(1, Income, 101, 1, 15000000.0, Date(1, 10, 2026), Date(), "10/2026", "Luong hang thang"));
+    recurringList.push(RecurringTransaction(2, Expense, 202, 1, 3500000.0, Date(1, 10, 2026), Date(31, 12, 2026), "10/2026", "Tien thue nha"));
+    recurringList.push(RecurringTransaction(3, Expense, 201, 2, 250000.0, Date(1, 10, 2026), Date(), "10/2026", "Goi cuoc internet"));
+    recurringList.push(RecurringTransaction(4, Expense, 203, 1, 500000.0, Date(1, 12, 2026), Date(), "", "Dang ky tap Gym"));
+    recurringList.push(RecurringTransaction(5, Expense, 204, 1, 200000.0, Date(1, 1, 2026), Date(30, 9, 2026), "09/2026", "Bao hiem xe"));
     cout << "\n--- TEST 1: Khoi dong app vao thang 11/2026 ---\n";
     processRecurringTransactions(recurringList, transactions, wallets);
     assert(transactions.getSize() == 2);

@@ -4,9 +4,10 @@
 #include "DynamicArray.h"
 #include "Date.h"
 #include "Wallet.h"
+#include "ExpenseCategory.h"
+#include "IncomeSource.h"
 #include "Transaction.h"
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 
 class RecurringTransaction{
 private:
@@ -44,7 +45,18 @@ public:
         amount = amt;
     }
 };
-void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list);
+void printTransactionTable(
+    DynamicArray<Transaction>& list,
+    DynamicArray<Wallet>& wallets,
+    DynamicArray<ExpenseCategory>& categories,
+    DynamicArray<IncomeSource>& sources
+);
+void printRecurringTransactionsTable(
+    DynamicArray<RecurringTransaction>& list,
+    DynamicArray<Wallet>& wallets,
+    DynamicArray<ExpenseCategory>& categories,
+    DynamicArray<IncomeSource>& sources
+);
 void processRecurringTransactions(
     DynamicArray<RecurringTransaction>& recurringList,
     DynamicArray<Transaction>& transactions,
