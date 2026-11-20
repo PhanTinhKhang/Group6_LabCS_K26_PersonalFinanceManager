@@ -228,6 +228,7 @@ bool load(DynamicArray<Wallet> &W, DynamicArray<ExpenseCategory> &Ex,
         double dou1;
         Date date1, date2;
         string str1, str2;
+
         fin.read((char *)(&num1), 4);
         fin.read((char *)(&num4), 4);
         fin.read((char *)(&num2), 4);

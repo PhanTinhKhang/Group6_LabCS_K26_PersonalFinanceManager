@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "Date.h"
+#include "dynamicArray.h"
 #include "ExpenseCategory.h"
 #include "IncomeSource.h"
 #include "Wallet.h"

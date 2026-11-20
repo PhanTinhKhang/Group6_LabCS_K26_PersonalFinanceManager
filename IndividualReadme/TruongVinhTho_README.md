@@ -1,4 +1,4 @@
-#Personal Contribution & Weekly Log
+# Personal Contribution & Weekly Log
 
 - **Student name:** Trương Vĩnh Thọ
 - **Role:** Team member
@@ -12,7 +12,7 @@
 
 ### Week 1: Define IncomeSource and ExpenseCategory
 
-- \*\*Branch `main`
+- **Branch** `main`
 
 #### Tasks Completed:
 
@@ -36,7 +36,7 @@
 
 ### Week 2: Declare IncomeSource, ExpenseCategory functions
 
-- \*\*Branch `main`
+- **Branch** `main`
 
 #### Tasks Completed:
 
@@ -66,11 +66,14 @@
 
 #### Tasks Completed:
 
--[x] **Declare save function:** - Declare save function -[x] **Declare load function:** - Declare load funxtion
+- [x] **Declare save function:** use to write all data about wallet, income source, expense category, transaction, recurring transaction to a binary file for later use, mostly used when closing app.
+
+- [x] **Declare load function:** use to read from the binary file(same file as save function) to get data for running, mostly used when re-opening app.
 
 #### Key Commits:
 
 - `Declare save and load function`
+- `Adding test source and storing address for save and load function, fix some bug in FileStorage.cpp`
 
 ---
 
@@ -78,6 +81,8 @@
 
 | File / Component                           | Type          | Description                                                              |
 | :----------------------------------------- | :------------ | :----------------------------------------------------------------------- |
+| `test/Storage.bin`                         | Binary file   | temporary storing address used to build up save and load function        |
 | `include/FileStorage.h`                    | Header        | declare function for reading and writing user information to binary file |
 | `src/FileStorage.cpp`                      | Source        | define function for reading and writing user information to binary file  |
+| `test/test_filestorage.cpp`                | Test Source   | test save and load function declared in include/FileStorage.h            |
 | `IndivisualReadme/TruongVinhTho_README.md` | Documentation | Personal weekly log and milestone tracker                                |
