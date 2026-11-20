@@ -10,7 +10,7 @@
 void inputIncome( std::string &date,  int &SourceID, double &Amount,
                  int &walletId, std::string &desc);
 bool addIncome(DynamicArray<Wallet>& wallets,DynamicArray<IncomeSource>& sources,
-               DynamicArray<Transaction>& transactions, const std::string& date, const std::string& sourceId,
+               DynamicArray<Transaction>& transactions, const std::string& date, const int& sourceId,
                double Amount, const int& walletId,
                const std::string& desc);
 #endif

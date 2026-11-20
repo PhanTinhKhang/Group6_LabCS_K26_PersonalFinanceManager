@@ -59,3 +59,25 @@
 | `src/ExpenseCategory.cpp`                    | Source        | define add, del,... functions for ExpenseCategory |
 | `test/test_ExpenseCategory_and_IncomeSource` | Test Source   | Test new function                                 |
 | `IndivisualReadme/TruongVinhTho_README.md`   | Documentation | Personal weekly log and milestone tracker         |
+
+### Week 3: Declare load and save function.
+
+- **Branch:** `main`
+
+#### Tasks Completed:
+
+-[x] **Declare save function:** - Declare save function -[x] **Declare load function:** - Declare load funxtion
+
+#### Key Commits:
+
+- `Declare save and load function`
+
+---
+
+## Cumulative Contributions & File Registry
+
+| File / Component                           | Type          | Description                                                              |
+| :----------------------------------------- | :------------ | :----------------------------------------------------------------------- |
+| `include/FileStorage.h`                    | Header        | declare function for reading and writing user information to binary file |
+| `src/FileStorage.cpp`                      | Source        | define function for reading and writing user information to binary file  |
+| `IndivisualReadme/TruongVinhTho_README.md` | Documentation | Personal weekly log and milestone tracker                                |
