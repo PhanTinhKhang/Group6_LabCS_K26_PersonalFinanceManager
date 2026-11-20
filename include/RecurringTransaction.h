@@ -44,7 +44,65 @@ public:
     void setAmount(double amt) {
         amount = amt;
     }
+    void setWalletId(int wId) {
+        walletId = wId;
+    }
+    void setDescription(const std::string& desc) {
+        description = desc;
+    }
+    void setStartDate(const Date& start) {
+        startDate = start;
+    }
+    void setEndDate(const Date& end) {
+        endDate = end;
+    }
+    void setSourceOrCatId(int id) {
+        sourceOrCatId = id;
+    }
+    void setType(TransactionType t) {
+        type = t;
+    }
 };
+
+int findRecurringTransactionIndexById(int id, DynamicArray<RecurringTransaction>& list);
+
+bool createRecurringTransaction(
+    DynamicArray<RecurringTransaction>& list,
+    int id,
+    TransactionType type,
+    int srcCatId,
+    int walletId,
+    double amount,
+    const Date& startDate,
+    const Date& endDate,
+    const std::string& desc,
+    DynamicArray<Wallet>& wallets
+);
+
+bool createRecurringTransaction(
+    DynamicArray<RecurringTransaction>& list,
+    int id,
+    TransactionType type,
+    int srcCatId,
+    int walletId,
+    double amount,
+    const Date& startDate,
+    const Date& endDate,
+    const std::string& desc,
+    DynamicArray<Wallet>& wallets,
+    DynamicArray<ExpenseCategory>& categories,
+    DynamicArray<IncomeSource>& sources
+);
+
+bool deleteRecurringTransaction(DynamicArray<RecurringTransaction>& list, int id);
+
+bool editRecurringAmount(DynamicArray<RecurringTransaction>& list, int id, double newAmount);
+bool editRecurringWallet(DynamicArray<RecurringTransaction>& list, int id, int newWalletId, DynamicArray<Wallet>& wallets);
+bool editRecurringEndDate(DynamicArray<RecurringTransaction>& list, int id, const Date& newEndDate);
+bool editRecurringDescription(DynamicArray<RecurringTransaction>& list, int id, const std::string& newDesc);
+
+bool isRecurringActive(const RecurringTransaction& tx, const Date& currentDate);
+
 void printTransactionTable(
     DynamicArray<Transaction>& list,
     DynamicArray<Wallet>& wallets,

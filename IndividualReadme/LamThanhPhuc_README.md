@@ -90,6 +90,9 @@
 
   * Validated full execution lifecycle: initial execution, multi-wallet balance synchronization, insufficient balance rejection, active cycle duplicate suppression, and boundary date filtering.
 
+#### AI Declaration:
+* Gemini, Google, gemini.google.com, prompt:"Liệt kê cho tôi một số hàm cần thiết để bổ sung vào phần định nghĩa cho RecurringTransaction.cpp(kiểu như tạo, xóa giao dịch định kỳ,...)". Using AI to generate functions to manage recurring transaction:`findRecurringTransactionIndexById`, `createRecurringTransaction`, `deleteRecurringTransaction`, `editRecurringAmount`, `editRecurringWallet`, `editRecurringEndDate`, `editRecurringDescription`, `isRecurringActive` and testing function. 
+
 #### Key Commits / PRs:
 
 * `feat: migrate RecurringTransaction to use Date class for start and end dates`
