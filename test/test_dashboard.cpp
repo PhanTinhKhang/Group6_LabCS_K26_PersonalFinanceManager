@@ -15,25 +15,25 @@ void testCalculateTotalBalance() {
     DynamicArray<Wallet> wallets;
     assert(calculateTotalBalance(wallets) == 0.0);
 
-    wallets.push(Wallet("W_CASH", "Physical Cash", 3450000.0));
+    wallets.push(Wallet(1, "Physical Cash", 3450000.0));
     assert(calculateTotalBalance(wallets) == 3450000.0);
 
-    wallets.push(Wallet("W_TCB", "Techcombank Debit", 18500000.0));
+    wallets.push(Wallet(2, "Techcombank Debit", 18500000.0));
     assert(calculateTotalBalance(wallets) == 21950000.0);
 
-    wallets.push(Wallet("W_MOMO", "MoMo E-Wallet", 1500000.0));
+    wallets.push(Wallet(3, "MoMo E-Wallet", 1500000.0));
     assert(calculateTotalBalance(wallets) == 23450000.0);
 
-    wallets.push(Wallet("W_SAVING", "Bank Savings", 5000000.0));
+    wallets.push(Wallet(4, "Bank Savings", 5000000.0));
     assert(calculateTotalBalance(wallets) == 28450000.0);
 }
 
 void testRenderDashboard() {
     DynamicArray<Wallet> wallets;
-    wallets.push(Wallet("W_CASH", "Physical Cash", 3450000.0));
-    wallets.push(Wallet("W_TCB", "Techcombank Debit", 18500000.0));
-    wallets.push(Wallet("W_MOMO", "MoMo E-Wallet", 1500000.0));
-    wallets.push(Wallet("W_SAVING", "Bank Savings", 5000000.0));
+    wallets.push(Wallet(1, "Physical Cash", 3450000.0));
+    wallets.push(Wallet(2, "Techcombank Debit", 18500000.0));
+    wallets.push(Wallet(3, "MoMo E-Wallet", 1500000.0));
+    wallets.push(Wallet(4, "Bank Savings", 5000000.0));
 
     renderDashboard(wallets);
 }

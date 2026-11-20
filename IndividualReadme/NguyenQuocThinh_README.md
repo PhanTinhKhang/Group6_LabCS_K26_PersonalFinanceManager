@@ -32,15 +32,45 @@ In accordance with the official project requirements (*Final Project Personal Fi
 3. **Automated Unit Testing (`test/test_dashboard.cpp`):**
    - Created test suite validating currency formatting (positive, negative, zero, fractional), balance aggregation across multiple wallets, and rendering output.
 
+### Milestone 3 (Week 3): Automated Dashboard Navigation Flow & Modular Refactoring
+* **Branch:** `feature/Navigation_Flow`
+1. **Automated Navigation Flow Enforcement (`include/NavigationFlow.h`, `src/NavigationFlow.cpp`):**
+   - Implemented sub-screen navigation handlers conforming to Section 1.2 of the project specification.
+   - Guaranteed that upon completion of **any specific action** (recording daily income, recording daily expense, creating/editing/deleting wallets, managing expense categories and income sources, processing or adding monthly recurring transactions, generating statistical reports, or saving/reloading data), the application:
+     1. Displays a clear status notification (`[SUCCESS]` or `[ERROR]`).
+     2. Pauses for acknowledgment keypress (`[*] Press [Enter] to continue...`).
+     3. Clears the console screen and **automatically returns to the central Dashboard**.
+   - Eliminated nested/trapping sub-menu loops so that the user is never stuck in sub-interfaces after completing a task.
+2. **Modular Architecture & Succinct Entrypoint (`src/main.cpp`):**
+   - Refactored `src/main.cpp` to be concise, clean, and focused solely on running the main application event loop (~60 lines).
+   - Separated binary persistence logic into `include/Persistence.h` & `src/Persistence.cpp`.
+   - Separated financial analytics into `include/FinancialReport.h` & `src/FinancialReport.cpp`.
+   - Separated navigation workflows into `include/NavigationFlow.h` & `src/NavigationFlow.cpp`.
+3. **Binary Data Persistence Integration (`include/Persistence.h`, `src/Persistence.cpp`):**
+   - Implemented binary serialization and deserialization routines (`saveDataToFile` and `loadDataFromFile`) preserving wallets, categories, sources, transactions, and recurring rules across sessions.
+   - Integrated default data seeding (`seedDefaultData`) on first launch to facilitate immediate testing and user onboarding.
+4. **Unit Test Suite Harmonization:**
+   - Updated `test/test_dashboard.cpp`, `test/test_wallet_crud.cpp`, and `test/test_WALLET_TRANSACTION.cpp` to align with standardized integer IDs.
+   - Verified that all unit test suites execute and pass with zero failures.
+
 ---
 
 ## II. INTERACTED & CREATED FILES
 
 | File Path | Type | Description |
 | :--- | :--- | :--- |
+| `src/main.cpp` | Source | Succinct application entrypoint running the central event loop and dispatching menu choices. |
+| `include/NavigationFlow.h` | Header | Declarations for automated navigation handlers and application lifecycle routines. |
+| `src/NavigationFlow.cpp` | Source | Implementation of automated return navigation flows returning to Dashboard after each action. |
+| `include/FinancialReport.h` | Header | Declarations for all 5 financial reporting engines and analytics. |
+| `src/FinancialReport.cpp` | Source | Implementation of period summary, wallet breakdown, multi-year overview, and category/source breakdowns. |
+| `include/Persistence.h` | Header | Declarations for binary file serialization/deserialization and default data seeding. |
+| `src/Persistence.cpp` | Source | Implementation of binary read/write operations for application state storage. |
 | `include/Dashboard.h` | Header | Declarations for dashboard calculations, table rendering, and `MenuAction` enum. |
 | `src/Dashboard.cpp` | Source | Implementation of total balance aggregation, currency formatting, dashboard rendering, and safe input capture. |
-| `test/test_dashboard.cpp` | Test Source | Standalone unit test suite verifying balance calculations and formatting. |
+| `test/test_dashboard.cpp` | Test Source | Standalone unit test suite verifying balance calculations and formatting with standardized integer IDs. |
+| `test/test_wallet_crud.cpp` | Test Source | Verified wallet CRUD operations with integer IDs. |
+| `test/test_WALLET_TRANSACTION.cpp` | Test Source | Verified wallet and transaction interactions with integer IDs. |
 | `include/Wallet.h` | Header | Added `inline` specifier to `printWallet` free function to resolve multi-translation-unit ODR linker collisions. |
 | `docs/DASHBOARD_CLI_DESIGN.md` | Design Spec | Text-based ASCII wireframes for dashboard and sub-screens. |
 | `docs/GIT_WORKFLOW_GUIDE.md` | Team Guide | Git collaboration rules and conflict prevention guidelines. |
@@ -50,11 +80,11 @@ In accordance with the official project requirements (*Final Project Personal Fi
 
 ## III. COMPLIANCE WITH PROJECT RULES
 
-* **Zero Code Annotations / Notes:** In strict adherence to project instructions *(please do not add any note into the code)*, no comments or notes were added inside any C++ source or header files (`src/`, `include/`, `test/`).
-* **No STL Containers:** Uses strictly `DynamicArray<Wallet>` and standard `std::string`.
+* **Zero Code Annotations / Notes:** In strict adherence to project instructions *(please do not add any note into the code)*, no comments or notes (`//` or `/* */`) were added inside any C++ source or header files (`src/`, `include/`, `test/`).
+* **No STL Containers:** Uses strictly `DynamicArray<T>` and standard `std::string`.
 * **Standard Compilation:** Tested and verified with `g++ -std=c++11 -Wall -Wextra` with zero errors and zero warnings.
 
 ---
 
-**Last Updated:** November 13, 2026  
+**Last Updated:** November 20, 2026  
 **Assignee:** Nguyen Quoc Thinh (Student ID: 25125066)

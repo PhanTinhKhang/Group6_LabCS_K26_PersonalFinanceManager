@@ -23,7 +23,7 @@ void processRecurringTransactions(
     std::string currentCycleStr = oss.str();
     std::string altCycleStr = std::to_string(currentMonth) + "/" + std::to_string(currentYear);
     int size = recurringList.getSize();
-    std::cout << "  -> Kiem tra giao dich dinh ky cho chu ky: " << currentCycleStr << "...\n";
+    std::cout << "  -> Periodic transaction review for the cycle: " << currentCycleStr << "...\n";
     for(int i=0; i<size; i++) {
         RecurringTransaction& tx=recurringList[i];
         std::string lastApplied=tx.getLastAppliedMonth();
@@ -37,6 +37,10 @@ void processRecurringTransactions(
         if(hasValidEndDate(tx)) {
             Date end=tx.getEndDate();
             if (currentYear > end.getYear() || (currentYear==end.getYear() && currentMonth > end.getMonth())) {
+                int idx = findRecurringTransactionIndexById(tx.getId(), recurringList);
+                recurringList.pop(idx);
+                std::cout << "     [/] Remove #" << tx.getDescription()
+                          << ": Transaction expired\n";
                 continue;
             }
         }
@@ -48,8 +52,8 @@ void processRecurringTransactions(
             }
         }
         if(walletIndex==-1){
-            std::cout << "     [!] Bo qua #" << tx.getId()
-                      << ": Khong tim thay vi ID '" << tx.getWalletId() << "'\n";
+            std::cout << "     [!] SKip #" << tx.getDescription()
+                      << ": ID wallet not found '" << tx.getWalletId() << "'\n";
             continue;
         }
         bool walletUpdated = false;
@@ -61,9 +65,9 @@ void processRecurringTransactions(
             if (wallets[walletIndex].Withdrawal(tx.getAmount())) {
                 walletUpdated=true;
             } else {
-                std::cout << "     [X] Xu ly #" << tx.getId()
-                          << " that bai: Vi '" << wallets[walletIndex].get_NAME()
-                          << "' (" << tx.getWalletId() << ") khong du so du de thanh toan "
+                std::cout << "     [X] Processing #" << tx.getDescription()
+                          << " failed: Wallet '" << wallets[walletIndex].get_NAME()
+                          << "' (" << tx.getWalletId() << ") does not have a sufficient balance for the payment "
                           << std::fixed << std::setprecision(0) << tx.getAmount() << " VND!\n";
             }
         }
@@ -84,7 +88,7 @@ void processRecurringTransactions(
                       << (tx.getType() == Income ? "Income " : "Expense")
                       << " [" << tx.getDescription() << "] : "
                       << (tx.getType() == Income ? "+" : "-")
-                      << std::fixed << std::setprecision(0) << tx.getAmount() << " VND -> Vi: "
+                      << std::fixed << std::setprecision(0) << tx.getAmount() << " VND -> Wallet: "
                       << wallets[walletIndex].get_NAME() << " (" << tx.getWalletId() << ")\n";
         }
     }

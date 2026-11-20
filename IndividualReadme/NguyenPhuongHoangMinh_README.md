@@ -1,82 +1,91 @@
-# TASK COMPLETION REPORT
+# Personal Contribution & Weekly Log
 
-**Course:** Introduction to Programming  
-**Project:** Personal Finance Manager (C++)  
-**Assigned Task:** Define `Wallet` and `Transaction` (Income & Expense) Entities & Create Test Program  
-**Assignee:** Nguyen Phuong Hoang Minh 
-
----
-
-## I. SUMMARY OF COMPLETED WORK
-
-I was responsible for implementing the **`Wallet`** and **`Transaction`** modules. `Wallet` represents an account that holds money (cash, bank account, ...). `Transaction` represents a single income or expense entry applied to a wallet.
-
-### Key Contributions:
-1. **Designed the `Wallet` class**: Stores ID, name and balance, with getters/setters and basic operations (`Deposit`, `Withdrawal`, `CheckID`).
-2. **Designed the `Transaction` class**: Covers both Income and Expense using the `TransactionType` enum (`Income = 1`, `Expense = 2`).
-3. **Developed a test program**: Verifies object creation, printing, and applying transactions to a wallet.
+* **Student Name:** Nguyễn Phương Hoàng Minh
+* **Role:** Member (Wallet, Transaction, Income/Expense Record & Input Validation)
+* **Course:** Introduction to Computer Science (CS160) - APCS - HCMUS
+* **Project:** Personal Finance Manager (C++)
+* **Repository:** Group6_LabCS_K26_PersonalFinanceManager
 
 ---
 
-## II. INTERACTED & CREATED FILES
+## Weekly Activity Logs
 
-| File Path | Description |
-| :--- | :--- |
-| `include/Wallet.h` | Class definition for `Wallet`. |
-| `include/Transaction.h` | Class definition for `Transaction` and the `TransactionType` enum. |
-| `test/test_WALLET_TRANSACTION.cpp` | Test `main` for both classes. |
+### Week 1: Wallet & Transaction Entities
+* **Branch:** `feature/Wallet_Transaction`
 
----
-
-## III. TECHNICAL SPECIFICATIONS
-
-### `Wallet`
-* **`WALLET_ID` (`std::string`)**: Unique identifier of the wallet.
-* **`NAME` (`std::string`)**: Display name of the wallet.
-* **`BALANCE` (`double`)**: Current balance.
-* **Operations**: `Deposit(amount)` adds money; `Withdrawal(amount)` subtracts money and returns `false` if the balance is insufficient; `CheckID(id)` compares IDs.
-* **Helper**: `printWallet(const Wallet&)` prints a wallet (2 decimal places).
-
-### `Transaction`
-* **`TYPE` (`TransactionType`)**: Income or Expense.
-* **`DATE` (`std::string`)**: Date of the transaction.
-* **`SOURCE_OR_CATEGORY_ID` (`std::string`)**: SourceID for income, CategoryID for expense.
-* **`AMOUNT` (`double`)**: Monetary value.
-* **`WALLET_ID` (`std::string`)**: The wallet the transaction belongs to.
-* **`DESCRIPTION` (`std::string`)**: Notes.
-* **Helper**: `printTrans(const Transaction&)` prints a transaction (2 decimal places).
-
-### Design notes:
-* Data members are `private`; access is only through getters/setters.
-* Both classes provide a default constructor and a full-parameter constructor.
-* Parameters use `const std::string&` to avoid unnecessary copies.
-* `TransactionType` is defined once in `Transaction.h`; `RecurringTransaction.h` should include this header instead of redefining the enum.
+#### Tasks Completed:
+- [x] **Wallet Entity:**
+  - Defined `Wallet` (ID, name, balance) with `private` members, default and full constructors, getters and setters.
+  - Implemented balance operations: `Deposit(amount)`, `Withdrawal(amount)` (returns `false` if the balance is insufficient), and `CheckID(id)`.
+- [x] **Transaction Entity (Income & Expense):**
+  - Defined `Transaction` (type, date, source/category ID, amount, wallet ID, description) with the `TransactionType` enum (`Income = 1`, `Expense = 2`).
+  - Provided default and full constructors, getters and setters.
+- [x] **Testing:**
+  - Built `test/test_WALLET_TRANSACTION.cpp` to verify object creation, printing, and applying transactions to a wallet.
 
 ---
 
-## IV. TESTING
+### Week 2: Income Record & Expense Record
+* **Branch:** `feature/Income_Expense_Records`
 
-* The test program creates wallets and transactions, prints them, then applies each transaction to the matching wallet (Income -> `Deposit`, Expense -> `Withdrawal`).
-* Insufficient-balance case is checked through the return value of `Withdrawal`.
-* Build and run:
+#### Tasks Completed:
+- [x] **Income Record:**
+  - `inputIncome()` collects Date, Source ID, Amount, Wallet ID, Description.
+  - `addIncome()` validates input, deposits into the wallet, and saves the `Transaction`.
+- [x] **Expense Record:**
+  - `inputExpense()` and `addExpense()` follow the same flow using Category ID and `Withdrawal()`.
+  - A transaction is rejected and not saved when the balance is insufficient.
+- [x] **Data Consistency:**
+  - All checks run first; the wallet balance changes only after every check passes.
 
----
-
-## V. COMPLIANCE WITH PROJECT RULES
-
-* **No STL Containers**: Only `std::string` is used.
-* **Header-Only Definition**: All functions are short, so they are defined inside the header; free functions are marked `inline` to avoid multiple-definition errors.
-* **Standard OOP Encapsulation**: Private data members, public getters/setters.
-* **Git**: Work is done on branch `feature/Wallet_Transaction` and merged through a pull request.
-
----
-
-## VI. FURTHER FEATURES
-
-* **Transfer between wallets**: Add a `transfer(Wallet& from, Wallet& to, double amount)` operation that withdraws from one wallet and deposits into another, only if the source has enough balance.
-* **Input validation**: Reject negative `AMOUNT`, empty `WALLET_ID`, or invalid `DATE` when creating a `Transaction`.
-* **Savings wallet with interest**: Add a `SavingsWallet` (derived from `Wallet`) with an annual `interestRate`. A method `applyInterest(int months)` adds interest to the balance.
+#### Key Commits / PRs:
+* `add Income and Expense Record` (PR #6)
 
 ---
 
-**Date of Completion:** November 05, 2026
+### Week 3: Input Validator & Record Integration
+* **Branch:** `feature/InputValidator`
+
+#### Tasks Completed:
+- [x] **Input Parsing (string to value, returns `false` on invalid input):**
+  - `parseDate()`: accepts `dd/mm/yyyy`, `dd-mm-yyyy`, `dd mm yyyy` and month names (`13-Sep-2026`); both separators must be the same type; extra spaces around separators are allowed; invalid dates (e.g. 31/02, year outside 1900-2100) are rejected.
+  - `parseInt()`: positive integer IDs only (digits only, max 9 digits).
+  - `parseDouble()`: accepts `.` or `,` as decimal mark, rounds to 3 decimals, rejects letters, negatives and zero.
+  - `trimInput()`: removes leading/trailing whitespace.
+  - Output parameters are assigned only when the input is valid.
+- [x] **Re-prompt Helpers:**
+  - `readDate()`, `readInt()`, `readDouble()` read a line with `getline`, parse it, and ask again on invalid input.
+- [x] **ID Existence Checks:**
+  - `existWallet()`, `existIncome()`, `existExpense()` reuse the existing search functions.
+- [x] **Record Integration (Update Date):**
+  - Updated `IncomeRecord` and `ExpenseRecord` to take a `Date` object and the validator; removed hand-written date checks and `cin >>`.
+  - The team-wide migration of IDs to `int` and dates to the `Date` class was done in commit `standardlize all IDs to int and date to Date class`.
+- [x] **Testing:**
+  - `test/test_validator.cpp`: 60 cases pass (`parseInt`, `parseDouble`, `parseDate` valid/invalid formats, `existWallet`/`existIncome`/`existExpense`).
+  - `test/test_income_expense.cpp`: 12 cases pass (valid income/expense, non-positive amount, missing wallet/source/category, insufficient balance).
+
+#### Key Commits / PRs:
+* `feat: add InputValidator, apply to Income/Expense records, update README`
+
+---
+
+## Cumulative Contributions & File Registry
+
+| File / Component | Type | Responsibility / Description |
+| :--- | :--- | :--- |
+| `include/Wallet.h` | Header | Wallet entity (ID, name, balance, deposit/withdrawal) |
+| `include/Transaction.h` | Header | Transaction entity and `TransactionType` enum |
+| `src/Transaction.cpp` | Source | `printTrans()` (moved out of header to avoid multiple definitions) |
+| `include/IncomeRecord.h` | Header | Income record function declarations |
+| `src/IncomeRecord.cpp` | Source | Income input and processing |
+| `include/ExpenseRecord.h` | Header | Expense record function declarations |
+| `src/ExpenseRecord.cpp` | Source | Expense input and processing |
+| `include/InputValidator.h` | Header | Parsing, re-prompt and ID existence check declarations |
+| `src/InputValidator.cpp` | Source | Implementation of `parseDate/Int/Double`, `read...`, `exist...` |
+| `test/test_WALLET_TRANSACTION.cpp` | Test Source | Tests for Wallet and Transaction |
+| `test/test_income_expense.cpp` | Test Source | Tests for Income/Expense records |
+| `test/test_validator.cpp` | Test Source | Tests for InputValidator |
+| `IndividualReadme/NguyenPhuongHoangMinh_README.md` | Documentation | Personal weekly log and milestone tracker |
+
+---
+**Update date: 20/11/2026**

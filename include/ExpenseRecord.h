@@ -6,14 +6,13 @@
 #include "DynamicArray.h"
 #include "ExpenseCategory.h"
 #include "Date.h"
+#include "InputValidator.h"
 #include <string>
 
+void inputExpense(Date &date, int &cateId, double &amount,
+                  int &walletId, std::string &desc);
 
-void inputExpense(std::string &date, 
-    int &CateId, double &Amount, 
-    int &walletId,std::string &desc);
-
-bool addExpense(DynamicArray<Wallet> &wallets, DynamicArray<ExpenseCategory> &expenses,
-    DynamicArray<Transaction> &transaction, const std::string &date, 
-    const int& ExpenseId,double Amount, const int& walletId, const std::string &desc);
+bool addExpense(DynamicArray<Wallet>& wallets, DynamicArray<ExpenseCategory>& categories,
+                DynamicArray<Transaction>& transactions, const Date& date, int cateId,
+                double amount, int walletId, const std::string& desc);
 #endif
