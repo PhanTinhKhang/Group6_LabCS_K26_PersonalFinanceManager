@@ -1,5 +1,6 @@
 #include "../include/RecurringTransaction.h"
 #include "../include/Dashboard.h"
+#include "../include/UITheme.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -22,17 +23,17 @@ void printTransactionTable(
 ){
     int size = list.getSize();
     if (size <= 0) {
-        std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
+        std::cout << Color::CYAN << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
         std::cout << "| No.  | Date       | Type      | Category / Source      | Wallet               | Amount (VND)           | Description                  |\n";
         std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
         std::cout << "|  No transactions found in this register.                                                                                              |\n";
-        std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
+        std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n" << Color::RESET;
         return;
     }
 
-    std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
+    std::cout << Color::CYAN << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
     std::cout << "| No.  | Date       | Type      | Category / Source      | Wallet               | Amount (VND)           | Description                  |\n";
-    std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
+    std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n" << Color::RESET;
 
     for (int i = 0; i < size; i++) {
         const Transaction& tx = list[i];
@@ -47,16 +48,18 @@ void printTransactionTable(
         std::string descStr = truncateStr(tx.get_DESC(), 28);
         std::string amountStr = formatCurrency(tx.get_AMOUNT());
 
-        std::cout << "|  " << std::setw(2) << numStr << "  | "
-                  << std::left << std::setw(10) << dateStr << " | "
-                  << std::left << std::setw(9) << typeStr << " | "
-                  << std::left << std::setw(22) << catName << " | "
-                  << std::left << std::setw(20) << walletName << " | "
-                  << std::right << std::setw(22) << amountStr << " | "
-                  << std::left << std::setw(28) << descStr << " |\n";
+        const char* typeColor = (tx.get_TYPE() == Income) ? Color::GREEN : Color::RED;
+
+        std::cout << Color::CYAN << "|  " << Color::RESET << std::setw(2) << numStr << Color::CYAN << "  | "
+                  << Color::WHITE << std::left << std::setw(10) << dateStr << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << typeColor << std::left << std::setw(9) << typeStr << Color::RESET << Color::CYAN << " | "
+                  << Color::WHITE << std::left << std::setw(22) << catName << Color::RESET << Color::CYAN << " | "
+                  << Color::WHITE << std::left << std::setw(20) << walletName << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << typeColor << std::right << std::setw(22) << amountStr << Color::RESET << Color::CYAN << " | "
+                  << Color::GRAY << std::left << std::setw(28) << descStr << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
 
-    std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
+    std::cout << Color::CYAN << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n" << Color::RESET;
 }
 
 void printRecurringTransactionsTable(
@@ -67,17 +70,17 @@ void printRecurringTransactionsTable(
 ) {
     int size = list.getSize();
     if (size <= 0) {
-        std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
+        std::cout << Color::CYAN << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
         std::cout << "|  ID  | Type      | Category / Source      | Wallet               | Amount (VND)           | Start Date   | Last Applied | Description                |\n";
         std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
         std::cout << "|  No recurring transaction rules registered.                                                                                                |\n";
-        std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
+        std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n" << Color::RESET;
         return;
     }
 
-    std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
+    std::cout << Color::CYAN << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
     std::cout << "|  ID  | Type      | Category / Source      | Wallet               | Amount (VND)           | Start Date   | Last Applied | Description                |\n";
-    std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
+    std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n" << Color::RESET;
 
     for (int i = 0; i < size; i++) {
         const RecurringTransaction& tx = list[i];
@@ -92,15 +95,17 @@ void printRecurringTransactionsTable(
         std::string descStr = truncateStr(tx.getDescription(), 26);
         std::string amountStr = formatCurrency(tx.getAmount());
 
-        std::cout << "| " << std::right << std::setw(4) << tx.getId() << " | "
-                  << std::left << std::setw(9) << typeStr << " | "
-                  << std::left << std::setw(22) << catName << " | "
-                  << std::left << std::setw(20) << walletName << " | "
-                  << std::right << std::setw(22) << amountStr << " | "
-                  << std::left << std::setw(12) << startDateStr << " | "
-                  << std::left << std::setw(12) << lastAppliedStr << " | "
-                  << std::left << std::setw(26) << descStr << " |\n";
+        const char* typeColor = (tx.getType() == Income) ? Color::GREEN : Color::RED;
+
+        std::cout << Color::CYAN << "| " << Color::YELLOW << std::right << std::setw(4) << tx.getId() << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << typeColor << std::left << std::setw(9) << typeStr << Color::RESET << Color::CYAN << " | "
+                  << Color::WHITE << std::left << std::setw(22) << catName << Color::RESET << Color::CYAN << " | "
+                  << Color::WHITE << std::left << std::setw(20) << walletName << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << typeColor << std::right << std::setw(22) << amountStr << Color::RESET << Color::CYAN << " | "
+                  << Color::WHITE << std::left << std::setw(12) << startDateStr << Color::RESET << Color::CYAN << " | "
+                  << Color::GRAY << std::left << std::setw(12) << lastAppliedStr << Color::RESET << Color::CYAN << " | "
+                  << Color::GRAY << std::left << std::setw(26) << descStr << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
 
-    std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
+    std::cout << Color::CYAN << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n" << Color::RESET;
 }

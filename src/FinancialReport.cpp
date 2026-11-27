@@ -2,6 +2,7 @@
 #include "../include/Dashboard.h"
 #include "../include/InputValidator.h"
 #include "../include/RecurringTransaction.h"
+#include "../include/UITheme.h"
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
@@ -49,7 +50,7 @@ void reportTimeBasedSummary(DynamicArray<Transaction>& transactions) {
     readDate(" Enter Start Date (DD/MM/YYYY): ", fromDate);
     readDate(" Enter End Date (DD/MM/YYYY): ", toDate);
     if (toDate.isBefore(fromDate)) {
-        std::cout << "\n [ERROR] End Date cannot be before Start Date.\n";
+        std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " End Date cannot be before Start Date.\n";
         return;
     }
 
@@ -64,21 +65,25 @@ void reportTimeBasedSummary(DynamicArray<Transaction>& transactions) {
         }
     }
 
+    double netFlow = totalIn - totalOut;
+    const char* netColor = (netFlow >= 0.0) ? Color::GREEN : Color::RED;
+
     std::string periodTitle = "Period: " + fromDate.toString() + " - " + toDate.toString();
-    std::cout << "\n+------------------------------------------------------------------------------+\n";
-    std::cout << "|                        TIME-BASED FINANCIAL STATEMENT                        |\n";
-    std::cout << "| " << std::left << std::setw(76) << periodTitle << " |\n";
+    std::cout << "\n" << Color::CYAN << "+------------------------------------------------------------------------------+\n";
+    std::cout << "| " << Color::BOLD << Color::WHITE << "                       TIME-BASED FINANCIAL STATEMENT                        " << Color::RESET << Color::CYAN << "|\n";
+    std::cout << "| " << Color::GRAY << std::left << std::setw(76) << periodTitle << Color::RESET << Color::CYAN << " |\n";
     std::cout << "+------------------------------------------------------+-----------------------+\n";
-    std::cout << "| Metric Description                                   | Amount (VND)          |\n";
+    std::cout << "| " << Color::WHITE << std::left << std::setw(52) << "Metric Description" << Color::RESET << Color::CYAN << " | "
+              << Color::WHITE << std::left << std::setw(21) << "Amount (VND)" << Color::RESET << Color::CYAN << " |\n";
     std::cout << "+------------------------------------------------------+-----------------------+\n";
     std::cout << "|  Total Revenue & Inflow (Income)                     | "
-              << std::right << std::setw(21) << formatCurrency(totalIn) << " |\n";
+              << Color::BOLD << Color::GREEN << std::right << std::setw(21) << formatCurrency(totalIn) << Color::RESET << Color::CYAN << " |\n";
     std::cout << "|  Total Expenditure & Outflow (Expense)               | "
-              << std::right << std::setw(21) << formatCurrency(totalOut) << " |\n";
+              << Color::BOLD << Color::RED << std::right << std::setw(21) << formatCurrency(totalOut) << Color::RESET << Color::CYAN << " |\n";
     std::cout << "+------------------------------------------------------+-----------------------+\n";
-    std::cout << "|  NET PERIOD CASH FLOW                                | "
-              << std::right << std::setw(21) << formatCurrency(totalIn - totalOut) << " |\n";
-    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "|  " << Color::BOLD << Color::WHITE << "NET PERIOD CASH FLOW                                " << Color::RESET << Color::CYAN << "| "
+              << Color::BOLD << netColor << std::right << std::setw(21) << formatCurrency(netFlow) << Color::RESET << Color::CYAN << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n" << Color::RESET;
 }
 
 void reportWalletBreakdown(
@@ -88,14 +93,14 @@ void reportWalletBreakdown(
     DynamicArray<Transaction>& transactions
 ) {
     if (wallets.getSize() == 0) {
-        std::cout << "\n [ERROR] No wallets available.\n";
+        std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " No wallets available.\n";
         return;
     }
     viewWallets(wallets);
     int walletId = 0;
     readInt(" Enter Wallet ID: ", walletId);
     if (!existWallet(wallets, walletId)) {
-        std::cout << "\n [ERROR] Wallet ID not found.\n";
+        std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Wallet ID not found.\n";
         return;
     }
 
@@ -103,7 +108,7 @@ void reportWalletBreakdown(
     readDate(" Enter Start Date (DD/MM/YYYY): ", fromDate);
     readDate(" Enter End Date (DD/MM/YYYY): ", toDate);
     if (toDate.isBefore(fromDate)) {
-        std::cout << "\n [ERROR] End Date cannot be before Start Date.\n";
+        std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " End Date cannot be before Start Date.\n";
         return;
     }
 
@@ -121,18 +126,21 @@ void reportWalletBreakdown(
         }
     }
 
-    std::cout << "\n WALLET REPORT: " << getWalletNameById(walletId, wallets)
-              << " (" << fromDate.toString() << " - " << toDate.toString() << ")\n";
+    double netFlow = totalIn - totalOut;
+    const char* netColor = (netFlow >= 0.0) ? Color::GREEN : Color::RED;
+
+    std::cout << "\n " << Color::BOLD << Color::WHITE << "WALLET REPORT: " << Color::YELLOW << getWalletNameById(walletId, wallets)
+              << Color::GRAY << " (" << fromDate.toString() << " - " << toDate.toString() << ")" << Color::RESET << "\n";
     printTransactionTable(filtered, wallets, categories, sources);
-    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << Color::CYAN << "+------------------------------------------------------+-----------------------+\n";
     std::cout << "|  Wallet Period Income                                | "
-              << std::right << std::setw(21) << formatCurrency(totalIn) << " |\n";
+              << Color::BOLD << Color::GREEN << std::right << std::setw(21) << formatCurrency(totalIn) << Color::RESET << Color::CYAN << " |\n";
     std::cout << "|  Wallet Period Expense                               | "
-              << std::right << std::setw(21) << formatCurrency(totalOut) << " |\n";
+              << Color::BOLD << Color::RED << std::right << std::setw(21) << formatCurrency(totalOut) << Color::RESET << Color::CYAN << " |\n";
     std::cout << "+------------------------------------------------------+-----------------------+\n";
-    std::cout << "|  WALLET PERIOD NET FLOW                              | "
-              << std::right << std::setw(21) << formatCurrency(totalIn - totalOut) << " |\n";
-    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "|  " << Color::BOLD << Color::WHITE << "WALLET PERIOD NET FLOW                              " << Color::RESET << Color::CYAN << "| "
+              << Color::BOLD << netColor << std::right << std::setw(21) << formatCurrency(netFlow) << Color::RESET << Color::CYAN << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n" << Color::RESET;
 }
 
 void reportMultiYearOverview(DynamicArray<Transaction>& transactions) {
@@ -140,9 +148,9 @@ void reportMultiYearOverview(DynamicArray<Transaction>& transactions) {
     readYearsSelection(years);
 
     double grandIn = 0.0, grandOut = 0.0;
-    std::cout << "\n+------+------------------------+------------------------+------------------------+\n";
+    std::cout << "\n" << Color::CYAN << "+------+------------------------+------------------------+------------------------+\n";
     std::cout << "| Year | Total Income (VND)     | Total Expense (VND)    | Net Balance (VND)      |\n";
-    std::cout << "+------+------------------------+------------------------+------------------------+\n";
+    std::cout << "+------+------------------------+------------------------+------------------------+\n" << Color::RESET;
     for (int yi = 0; yi < years.getSize(); ++yi) {
         int y = years[yi];
         double yIn = 0.0, yOut = 0.0;
@@ -157,17 +165,23 @@ void reportMultiYearOverview(DynamicArray<Transaction>& transactions) {
         }
         grandIn += yIn;
         grandOut += yOut;
-        std::cout << "| " << std::left << std::setw(4) << y << " | "
-                  << std::right << std::setw(22) << formatCurrency(yIn) << " | "
-                  << std::right << std::setw(22) << formatCurrency(yOut) << " | "
-                  << std::right << std::setw(22) << formatCurrency(yIn - yOut) << " |\n";
+        double net = yIn - yOut;
+        const char* netColor = (net >= 0.0) ? Color::GREEN : Color::RED;
+
+        std::cout << Color::CYAN << "| " << Color::YELLOW << std::left << std::setw(4) << y << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << Color::GREEN << std::right << std::setw(22) << formatCurrency(yIn) << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << Color::RED << std::right << std::setw(22) << formatCurrency(yOut) << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << netColor << std::right << std::setw(22) << formatCurrency(net) << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
-    std::cout << "+------+------------------------+------------------------+------------------------+\n";
-    std::cout << "| TOTAL| "
-              << std::right << std::setw(22) << formatCurrency(grandIn) << " | "
-              << std::right << std::setw(22) << formatCurrency(grandOut) << " | "
-              << std::right << std::setw(22) << formatCurrency(grandIn - grandOut) << " |\n";
-    std::cout << "+------+------------------------+------------------------+------------------------+\n";
+    double grandNet = grandIn - grandOut;
+    const char* grandNetColor = (grandNet >= 0.0) ? Color::GREEN : Color::RED;
+
+    std::cout << Color::CYAN << "+------+------------------------+------------------------+------------------------+\n";
+    std::cout << "| " << Color::BOLD << Color::WHITE << "TOTAL" << Color::RESET << Color::CYAN << "| "
+              << Color::BOLD << Color::GREEN << std::right << std::setw(22) << formatCurrency(grandIn) << Color::RESET << Color::CYAN << " | "
+              << Color::BOLD << Color::RED << std::right << std::setw(22) << formatCurrency(grandOut) << Color::RESET << Color::CYAN << " | "
+              << Color::BOLD << grandNetColor << std::right << std::setw(22) << formatCurrency(grandNet) << Color::RESET << Color::CYAN << " |\n";
+    std::cout << "+------+------------------------+------------------------+------------------------+\n" << Color::RESET;
 }
 
 void reportIncomeBreakdownBySource(
@@ -194,9 +208,9 @@ void reportIncomeBreakdownBySource(
         }
     }
 
-    std::cout << "\n+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "\n" << Color::CYAN << "+------+--------------------------------+------------------------+------------+\n";
     std::cout << "| No.  | Income Source Name             | Total Amount (VND)     |  Share (%) |\n";
-    std::cout << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n" << Color::RESET;
     for (int s = 0; s < sources.getSize(); ++s) {
         double pct = (totalIn > 0.0) ? (perSource[s] * 100.0 / totalIn) : 0.0;
         std::string numStr = (s + 1 < 10 ? "0" : "") + std::to_string(s + 1);
@@ -211,15 +225,15 @@ void reportIncomeBreakdownBySource(
             pctStr = buf;
         }
 
-        std::cout << "|  " << std::setw(2) << numStr << "  | "
-                  << std::left << std::setw(30) << sName << " | "
-                  << std::right << std::setw(22) << formatCurrency(perSource[s]) << " | "
-                  << std::right << std::setw(10) << pctStr << " |\n";
+        std::cout << Color::CYAN << "|  " << Color::RESET << std::setw(2) << numStr << Color::CYAN << "  | "
+                  << Color::WHITE << std::left << std::setw(30) << sName << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << Color::GREEN << std::right << std::setw(22) << formatCurrency(perSource[s]) << Color::RESET << Color::CYAN << " | "
+                  << Color::CYAN << std::right << std::setw(10) << pctStr << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
-    std::cout << "+------+--------------------------------+------------------------+------------+\n";
-    std::cout << "|      | TOTAL INCOME                   | "
-              << std::right << std::setw(22) << formatCurrency(totalIn) << " |    100.0 % |\n";
-    std::cout << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << Color::CYAN << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "|      | " << Color::BOLD << Color::WHITE << "TOTAL INCOME                   " << Color::RESET << Color::CYAN << "| "
+              << Color::BOLD << Color::GREEN << std::right << std::setw(22) << formatCurrency(totalIn) << Color::RESET << Color::CYAN << " |    100.0 % |\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n" << Color::RESET;
 }
 
 void reportExpenseBreakdownByCategory(
@@ -246,9 +260,9 @@ void reportExpenseBreakdownByCategory(
         }
     }
 
-    std::cout << "\n+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "\n" << Color::CYAN << "+------+--------------------------------+------------------------+------------+\n";
     std::cout << "| No.  | Expense Category Name          | Total Amount (VND)     |  Share (%) |\n";
-    std::cout << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n" << Color::RESET;
     for (int c = 0; c < categories.getSize(); ++c) {
         double pct = (totalOut > 0.0) ? (perCategory[c] * 100.0 / totalOut) : 0.0;
         std::string numStr = (c + 1 < 10 ? "0" : "") + std::to_string(c + 1);
@@ -263,13 +277,13 @@ void reportExpenseBreakdownByCategory(
             pctStr = buf;
         }
 
-        std::cout << "|  " << std::setw(2) << numStr << "  | "
-                  << std::left << std::setw(30) << cName << " | "
-                  << std::right << std::setw(22) << formatCurrency(perCategory[c]) << " | "
-                  << std::right << std::setw(10) << pctStr << " |\n";
+        std::cout << Color::CYAN << "|  " << Color::RESET << std::setw(2) << numStr << Color::CYAN << "  | "
+                  << Color::WHITE << std::left << std::setw(30) << cName << Color::RESET << Color::CYAN << " | "
+                  << Color::BOLD << Color::RED << std::right << std::setw(22) << formatCurrency(perCategory[c]) << Color::RESET << Color::CYAN << " | "
+                  << Color::CYAN << std::right << std::setw(10) << pctStr << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
-    std::cout << "+------+--------------------------------+------------------------+------------+\n";
-    std::cout << "|      | TOTAL EXPENSE                  | "
-              << std::right << std::setw(22) << formatCurrency(totalOut) << " |    100.0 % |\n";
-    std::cout << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << Color::CYAN << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "|      | " << Color::BOLD << Color::WHITE << "TOTAL EXPENSE                  " << Color::RESET << Color::CYAN << "| "
+              << Color::BOLD << Color::RED << std::right << std::setw(22) << formatCurrency(totalOut) << Color::RESET << Color::CYAN << " |    100.0 % |\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n" << Color::RESET;
 }

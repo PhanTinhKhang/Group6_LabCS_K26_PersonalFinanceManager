@@ -1,5 +1,6 @@
 #include "../include/DynamicArray.h"
 #include "../include/ExpenseCategory.h"
+#include "../include/UITheme.h"
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -75,22 +76,22 @@ void view(DynamicArray<ExpenseCategory> &storage)
     int sz = storage.getSize();
     if (sz == 0)
     {
-        cout << "+------+------------------------------------------+\n";
+        cout << Color::CYAN << "+------+------------------------------------------+\n";
         cout << "|  ID  | Expense Category Name                    |\n";
         cout << "+------+------------------------------------------+\n";
         cout << "|  No active expense categories defined.          |\n";
-        cout << "+------+------------------------------------------+\n";
+        cout << "+------+------------------------------------------+\n" << Color::RESET;
         return;
     }
-    cout << "+------+------------------------------------------+\n";
+    cout << Color::CYAN << "+------+------------------------------------------+\n";
     cout << "|  ID  | Expense Category Name                    |\n";
-    cout << "+------+------------------------------------------+\n";
+    cout << "+------+------------------------------------------+\n" << Color::RESET;
     for (int i = 0; i < sz; i++)
     {
-        cout << "| " << right << setw(4) << storage[i].get_id()
-             << " | " << left << setw(40) << storage[i].get_name() << " |\n";
+        cout << Color::CYAN << "| " << Color::YELLOW << right << setw(4) << storage[i].get_id() << Color::RESET
+             << Color::CYAN << " | " << Color::WHITE << left << setw(40) << storage[i].get_name() << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
-    cout << "+------+------------------------------------------+\n";
+    cout << Color::CYAN << "+------+------------------------------------------+\n" << Color::RESET;
 }
 
 string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage)

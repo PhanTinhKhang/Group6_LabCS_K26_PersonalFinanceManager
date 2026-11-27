@@ -1,4 +1,5 @@
 #include "../include/Dashboard.h"
+#include "../include/UITheme.h"
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -50,57 +51,90 @@ double calculateTotalBalance(DynamicArray<Wallet>& wallets) {
 }
 
 void renderDashboard(DynamicArray<Wallet>& wallets) {
-    std::cout << "========================================================================================\n";
-    std::cout << "                      PERSONAL FINANCE MANAGER - DASHBOARD CLI                          \n";
-    std::cout << "                   Faculty of Information Technology - VNU-HCMUS                        \n";
-    std::cout << "========================================================================================\n";
+    initConsole();
+
+    std::cout << Color::CYAN << "┌──────────────────────────────────────────────────────────────────────────────────────┐\n";
+    std::cout << "│  " << Color::BOLD << Color::WHITE << "PERSONAL FINANCE MANAGER" << Color::RESET << Color::CYAN << "  •  "
+              << Color::GRAY << "PRO CLI EDITION" << Color::RESET << Color::CYAN
+              << std::string(40, ' ') << "│\n";
+    std::cout << "│  " << Color::GRAY << "Academic Year 2026-2027  •  VNU-HCM University of Science"
+              << Color::CYAN << std::string(27, ' ') << "│\n";
+    std::cout << "├──────────────────────────────────────────────────────────────────────────────────────┤\n";
 
     double totalBalance = calculateTotalBalance(wallets);
     std::string totalStr = formatCurrency(totalBalance);
-
-    std::cout << "                             FINANCIAL SUMMARY OVERVIEW                                 \n";
-    std::cout << "+--------------------------------------------------------------------------------------+\n";
-    std::cout << "|  TOTAL AGGREGATE BALANCE: "
-              << std::right << std::setw(56) << totalStr << "   |\n";
-    std::cout << "+------+-------------+---------------------+------------------------+------------------+\n";
-    std::cout << "|  No. | Wallet ID   | Wallet Name         | Current Balance        | Status           |\n";
-    std::cout << "+------+-------------+---------------------+------------------------+------------------+\n";
-
     int count = wallets.getSize();
+    std::string countStr = std::to_string(count) + (count == 1 ? " Wallet" : " Wallets");
+
+    int leftLen = 22 + static_cast<int>(totalStr.length());
+    int rightLen = 19 + static_cast<int>(countStr.length());
+    int midSpaces = 86 - leftLen - rightLen;
+    if (midSpaces < 2) {
+        midSpaces = 2;
+    }
+
+    std::cout << "│  " << Color::WHITE << "Total Net Balance: " << Color::RESET
+              << Color::BOLD << Color::GREEN << totalStr << Color::RESET
+              << std::string(midSpaces, ' ')
+              << Color::GRAY << "Managed Accounts: " << Color::RESET
+              << Color::WHITE << countStr << Color::RESET << Color::CYAN << "  │\n";
+
+    std::cout << "├──────┬──────────────────────────────┬──────────────────────────────┬─────────────────┤\n";
+    std::cout << "│  ID  │ ACCOUNT / WALLET NAME        │        CURRENT BALANCE (VND) │ STATUS          │\n";
+    std::cout << "├──────┼──────────────────────────────┼──────────────────────────────┼─────────────────┤\n";
+
     if (count == 0) {
-        std::cout << "|  No active wallets found.                                                            |\n";
+        std::cout << "│  No active wallets found in portfolio." << std::string(44, ' ') << "│\n";
     } else {
         for (int i = 0; i < count; ++i) {
-            std::string numStr = (i + 1 < 10 ? "0" : "") + std::to_string(i + 1);
             std::string idStr = std::to_string(wallets[i].get_ID());
             std::string nameStr = wallets[i].get_NAME();
+            if (nameStr.length() > 28) {
+                nameStr = nameStr.substr(0, 25) + "...";
+            }
             std::string balanceStr = formatCurrency(wallets[i].get_BALANCE());
 
-            std::cout << "|  " << std::setw(2) << numStr << "  | "
-                      << std::left << std::setw(11) << idStr << " | "
-                      << std::left << std::setw(19) << nameStr << " | "
-                      << std::right << std::setw(22) << balanceStr << " | "
-                      << std::left << std::setw(16) << "Active" << " |\n";
+            std::cout << "│ " << Color::YELLOW << std::right << std::setw(4) << idStr << Color::RESET << Color::CYAN << " │ "
+                      << Color::WHITE << std::left << std::setw(28) << nameStr << Color::RESET << Color::CYAN << " │ "
+                      << Color::BOLD << Color::GREEN << std::right << std::setw(28) << balanceStr << Color::RESET << Color::CYAN << " │ "
+                      << Color::WHITE << std::left << std::setw(15) << "Active" << Color::RESET << Color::CYAN << " │\n";
         }
     }
-    std::cout << "+------+-------------+---------------------+------------------------+------------------+\n";
+    std::cout << "├──────┴──────────────────────────────┴──────────────────────────────┴─────────────────┤\n";
 
-    std::cout << "\n================================== MAIN NAVIGATION MENU =================================\n";
-    std::cout << "  [1] Record Income Transaction       (Add daily revenue/deposit)\n";
-    std::cout << "  [2] Record Expense Transaction      (Add daily expense/payment)\n";
-    std::cout << "  [3] Wallet Management               (Add / Edit / Remove Wallets)\n";
-    std::cout << "  [4] Master Data Management          (Expense Categories & Income Sources)\n";
-    std::cout << "  [5] Recurring Transactions Setup    (Monthly Automation Rules)\n";
-    std::cout << "  [6] Statistics & Financial Reports  (Time, Wallet, Multi-Year Analytics)\n";
-    std::cout << "  [7] Data Persistence                (Save to Disk / Reload File)\n";
-    std::cout << "  [0] Exit Application\n";
-    std::cout << "========================================================================================\n";
+    std::cout << "│  " << Color::BOLD << Color::WHITE << "NAVIGATION MENU" << Color::RESET << Color::CYAN << std::string(69, ' ') << "│\n";
+    std::cout << "├──────────────────────────────────────────────────────────────────────────────────────┤\n";
+    std::cout << "│  " << Color::GRAY << "OPERATIONS & CASH FLOW" << Color::CYAN << std::string(62, ' ') << "│\n";
+    std::cout << "│    " << Color::CYAN << "[1]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Record Income" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Record daily salary, revenue or deposit" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│    " << Color::CYAN << "[2]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Record Expense" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Record daily purchase, bill or expenditure" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│    " << Color::CYAN << "[3]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Wallet Management" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "View, create, edit or remove wallet accounts" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│" << std::string(86, ' ') << "│\n";
+    std::cout << "│  " << Color::GRAY << "ANALYTICS & AUTOMATION" << Color::CYAN << std::string(62, ' ') << "│\n";
+    std::cout << "│    " << Color::CYAN << "[4]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Master Data Management" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Configure expense categories and income sources" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│    " << Color::CYAN << "[5]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Recurring Transactions" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Set up automated monthly recurring rules" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│    " << Color::CYAN << "[6]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Financial Analytics" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Generate monthly, wallet and multi-year reports" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│    " << Color::CYAN << "[7]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Save & Load Data" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Binary file storage persistence and backups" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "│" << std::string(86, ' ') << "│\n";
+    std::cout << "│  " << Color::GRAY << "SYSTEM" << Color::CYAN << std::string(78, ' ') << "│\n";
+    std::cout << "│    " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " " << Color::WHITE << std::left << std::setw(26) << "Exit Application" << Color::RESET
+              << Color::GRAY << std::left << std::setw(52) << "Safely save database and exit session" << Color::RESET << Color::CYAN << "│\n";
+    std::cout << "└──────────────────────────────────────────────────────────────────────────────────────┘\n" << Color::RESET;
 }
 
 MenuAction promptMenuChoice() {
-    std::cout << " [?] Enter your selection (0 - 7): ";
+    std::cout << "\n  " << Color::BOLD << Color::CYAN << "▸" << Color::RESET << " Select an option [0 - 7]: ";
     int choice;
     if (!(std::cin >> choice)) {
+        if (std::cin.eof()) {
+            return MenuAction::EXIT;
+        }
         std::cin.clear();
         std::string discard;
         std::getline(std::cin, discard);
@@ -123,6 +157,6 @@ void clearScreen() {
 }
 
 void pauseScreen() {
-    std::cout << "\n [*] Press [Enter] to continue...";
+    std::cout << "\n  " << Color::GRAY << "Press [Enter] to return to dashboard..." << Color::RESET;
     std::cin.get();
 }
