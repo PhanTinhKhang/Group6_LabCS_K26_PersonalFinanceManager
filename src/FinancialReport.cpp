@@ -4,6 +4,7 @@
 #include "../include/RecurringTransaction.h"
 #include <iostream>
 #include <iomanip>
+#include <cstdio>
 
 static bool containsYear(DynamicArray<int>& years, int target) {
     for (int i = 0; i < years.getSize(); ++i) {
@@ -63,13 +64,21 @@ void reportTimeBasedSummary(DynamicArray<Transaction>& transactions) {
         }
     }
 
-    std::cout << "\n========================================================================================\n";
-    std::cout << " SUMMARY FROM " << fromDate.toString() << " TO " << toDate.toString() << "\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << "  Total Income  : +" << formatCurrency(totalIn) << "\n";
-    std::cout << "  Total Expense : -" << formatCurrency(totalOut) << "\n";
-    std::cout << "  Net Balance   :  " << formatCurrency(totalIn - totalOut) << "\n";
-    std::cout << "========================================================================================\n";
+    std::string periodTitle = "Period: " + fromDate.toString() + " - " + toDate.toString();
+    std::cout << "\n+------------------------------------------------------------------------------+\n";
+    std::cout << "|                        TIME-BASED FINANCIAL STATEMENT                        |\n";
+    std::cout << "| " << std::left << std::setw(76) << periodTitle << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "| Metric Description                                   | Amount (VND)          |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "|  Total Revenue & Inflow (Income)                     | "
+              << std::right << std::setw(21) << formatCurrency(totalIn) << " |\n";
+    std::cout << "|  Total Expenditure & Outflow (Expense)               | "
+              << std::right << std::setw(21) << formatCurrency(totalOut) << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "|  NET PERIOD CASH FLOW                                | "
+              << std::right << std::setw(21) << formatCurrency(totalIn - totalOut) << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
 }
 
 void reportWalletBreakdown(
@@ -115,9 +124,15 @@ void reportWalletBreakdown(
     std::cout << "\n WALLET REPORT: " << getWalletNameById(walletId, wallets)
               << " (" << fromDate.toString() << " - " << toDate.toString() << ")\n";
     printTransactionTable(filtered, wallets, categories, sources);
-    std::cout << "  Wallet Period Income  : +" << formatCurrency(totalIn) << "\n";
-    std::cout << "  Wallet Period Expense : -" << formatCurrency(totalOut) << "\n";
-    std::cout << "  Wallet Net Flow       :  " << formatCurrency(totalIn - totalOut) << "\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "|  Wallet Period Income                                | "
+              << std::right << std::setw(21) << formatCurrency(totalIn) << " |\n";
+    std::cout << "|  Wallet Period Expense                               | "
+              << std::right << std::setw(21) << formatCurrency(totalOut) << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
+    std::cout << "|  WALLET PERIOD NET FLOW                              | "
+              << std::right << std::setw(21) << formatCurrency(totalIn - totalOut) << " |\n";
+    std::cout << "+------------------------------------------------------+-----------------------+\n";
 }
 
 void reportMultiYearOverview(DynamicArray<Transaction>& transactions) {
@@ -125,12 +140,9 @@ void reportMultiYearOverview(DynamicArray<Transaction>& transactions) {
     readYearsSelection(years);
 
     double grandIn = 0.0, grandOut = 0.0;
-    std::cout << "\n========================================================================================\n";
-    std::cout << std::left << std::setw(8) << "Year"
-              << std::right << std::setw(24) << "Total Income"
-              << std::setw(24) << "Total Expense"
-              << std::setw(24) << "Net Balance" << "\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    std::cout << "\n+------+------------------------+------------------------+------------------------+\n";
+    std::cout << "| Year | Total Income (VND)     | Total Expense (VND)    | Net Balance (VND)      |\n";
+    std::cout << "+------+------------------------+------------------------+------------------------+\n";
     for (int yi = 0; yi < years.getSize(); ++yi) {
         int y = years[yi];
         double yIn = 0.0, yOut = 0.0;
@@ -145,17 +157,17 @@ void reportMultiYearOverview(DynamicArray<Transaction>& transactions) {
         }
         grandIn += yIn;
         grandOut += yOut;
-        std::cout << std::left << std::setw(8) << y
-                  << std::right << std::setw(24) << formatCurrency(yIn)
-                  << std::setw(24) << formatCurrency(yOut)
-                  << std::setw(24) << formatCurrency(yIn - yOut) << "\n";
+        std::cout << "| " << std::left << std::setw(4) << y << " | "
+                  << std::right << std::setw(22) << formatCurrency(yIn) << " | "
+                  << std::right << std::setw(22) << formatCurrency(yOut) << " | "
+                  << std::right << std::setw(22) << formatCurrency(yIn - yOut) << " |\n";
     }
-    std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << std::left << std::setw(8) << "TOTAL"
-              << std::right << std::setw(24) << formatCurrency(grandIn)
-              << std::setw(24) << formatCurrency(grandOut)
-              << std::setw(24) << formatCurrency(grandIn - grandOut) << "\n";
-    std::cout << "========================================================================================\n";
+    std::cout << "+------+------------------------+------------------------+------------------------+\n";
+    std::cout << "| TOTAL| "
+              << std::right << std::setw(22) << formatCurrency(grandIn) << " | "
+              << std::right << std::setw(22) << formatCurrency(grandOut) << " | "
+              << std::right << std::setw(22) << formatCurrency(grandIn - grandOut) << " |\n";
+    std::cout << "+------+------------------------+------------------------+------------------------+\n";
 }
 
 void reportIncomeBreakdownBySource(
@@ -182,18 +194,32 @@ void reportIncomeBreakdownBySource(
         }
     }
 
-    std::cout << "\n========================================================================================\n";
-    std::cout << " ANNUAL INCOME BREAKDOWN BY SOURCE\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    std::cout << "\n+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "| No.  | Income Source Name             | Total Amount (VND)     |  Share (%) |\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n";
     for (int s = 0; s < sources.getSize(); ++s) {
         double pct = (totalIn > 0.0) ? (perSource[s] * 100.0 / totalIn) : 0.0;
-        std::cout << "  " << std::left << std::setw(26) << sources[s].get_name()
-                  << std::right << std::setw(22) << formatCurrency(perSource[s])
-                  << "  (" << std::fixed << std::setprecision(1) << pct << "%)\n";
+        std::string numStr = (s + 1 < 10 ? "0" : "") + std::to_string(s + 1);
+        std::string sName = sources[s].get_name();
+        if (sName.length() > 30) {
+            sName = sName.substr(0, 27) + "...";
+        }
+        std::string pctStr = "";
+        {
+            char buf[32];
+            snprintf(buf, sizeof(buf), "%.1f %%", pct);
+            pctStr = buf;
+        }
+
+        std::cout << "|  " << std::setw(2) << numStr << "  | "
+                  << std::left << std::setw(30) << sName << " | "
+                  << std::right << std::setw(22) << formatCurrency(perSource[s]) << " | "
+                  << std::right << std::setw(10) << pctStr << " |\n";
     }
-    std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << "  TOTAL INCOME: " << formatCurrency(totalIn) << "\n";
-    std::cout << "========================================================================================\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "|      | TOTAL INCOME                   | "
+              << std::right << std::setw(22) << formatCurrency(totalIn) << " |    100.0 % |\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n";
 }
 
 void reportExpenseBreakdownByCategory(
@@ -220,16 +246,30 @@ void reportExpenseBreakdownByCategory(
         }
     }
 
-    std::cout << "\n========================================================================================\n";
-    std::cout << " ANNUAL EXPENSE BREAKDOWN BY CATEGORY\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    std::cout << "\n+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "| No.  | Expense Category Name          | Total Amount (VND)     |  Share (%) |\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n";
     for (int c = 0; c < categories.getSize(); ++c) {
         double pct = (totalOut > 0.0) ? (perCategory[c] * 100.0 / totalOut) : 0.0;
-        std::cout << "  " << std::left << std::setw(26) << categories[c].get_name()
-                  << std::right << std::setw(22) << formatCurrency(perCategory[c])
-                  << "  (" << std::fixed << std::setprecision(1) << pct << "%)\n";
+        std::string numStr = (c + 1 < 10 ? "0" : "") + std::to_string(c + 1);
+        std::string cName = categories[c].get_name();
+        if (cName.length() > 30) {
+            cName = cName.substr(0, 27) + "...";
+        }
+        std::string pctStr = "";
+        {
+            char buf[32];
+            snprintf(buf, sizeof(buf), "%.1f %%", pct);
+            pctStr = buf;
+        }
+
+        std::cout << "|  " << std::setw(2) << numStr << "  | "
+                  << std::left << std::setw(30) << cName << " | "
+                  << std::right << std::setw(22) << formatCurrency(perCategory[c]) << " | "
+                  << std::right << std::setw(10) << pctStr << " |\n";
     }
-    std::cout << "----------------------------------------------------------------------------------------\n";
-    std::cout << "  TOTAL EXPENSE: " << formatCurrency(totalOut) << "\n";
-    std::cout << "========================================================================================\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n";
+    std::cout << "|      | TOTAL EXPENSE                  | "
+              << std::right << std::setw(22) << formatCurrency(totalOut) << " |    100.0 % |\n";
+    std::cout << "+------+--------------------------------+------------------------+------------+\n";
 }

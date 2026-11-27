@@ -1,4 +1,5 @@
 #include "../include/Wallet.h"
+#include "../include/Dashboard.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -74,28 +75,30 @@ bool deleteWallet(DynamicArray<Wallet>& wallets, const int& id) {
 void viewWallets(DynamicArray<Wallet>& wallets) {
     int sz = wallets.getSize();
     if (sz == 0) {
-        cout << "No wallets found.\n";
+        cout << "+------+-------------+-------------------------+------------------------+\n";
+        cout << "| No.  | Wallet ID   | Wallet Name             | Current Balance        |\n";
+        cout << "+------+-------------+-------------------------+------------------------+\n";
+        cout << "|  No active wallets found.                                             |\n";
+        cout << "+------+-------------+-------------------------+------------------------+\n";
         return;
     }
 
-    cout << "\n+------+---------------+-----------------------+----------------------+\n";
-    cout << "| " << left << setw(4) << "No."
-         << " | " << setw(13) << "Wallet ID"
-         << " | " << setw(21) << "Wallet Name"
-         << " | " << right << setw(20) << "Balance (VND)" << " |\n";
-    cout << "+------+---------------+-----------------------+----------------------+\n";
+    cout << "+------+-------------+-------------------------+------------------------+\n";
+    cout << "| No.  | Wallet ID   | Wallet Name             | Current Balance        |\n";
+    cout << "+------+-------------+-------------------------+------------------------+\n";
 
-    cout << fixed << setprecision(2);
     for (int i = 0; i < sz; ++i) {
-        cout << "| " << left << setw(4) << (i + 1)
-             << " | " << setw(13) << wallets[i].get_ID()
-             << " | " << setw(21) << wallets[i].get_NAME()
-             << " | " << right << setw(20) << wallets[i].get_BALANCE() << " |\n";
+        string numStr = (i + 1 < 10 ? "0" : "") + to_string(i + 1);
+        cout << "|  " << setw(2) << numStr << "  | "
+             << left << setw(11) << wallets[i].get_ID() << " | "
+             << left << setw(23) << wallets[i].get_NAME() << " | "
+             << right << setw(22) << formatCurrency(wallets[i].get_BALANCE()) << " |\n";
     }
 
-    cout << "+------+---------------+-----------------------+----------------------+\n";
-    cout << "Total Balance: " << fixed << setprecision(2)
-         << getTotalBalance(wallets) << " VND\n";
+    cout << "+------+-------------+-------------------------+------------------------+\n";
+    cout << "|  TOTAL AGGREGATE BALANCE:                    | "
+         << right << setw(22) << formatCurrency(getTotalBalance(wallets)) << " |\n";
+    cout << "+----------------------------------------------+------------------------+\n";
 }
 
 double getTotalBalance(DynamicArray<Wallet>& wallets) {

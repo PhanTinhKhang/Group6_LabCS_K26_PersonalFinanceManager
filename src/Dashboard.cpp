@@ -64,7 +64,7 @@ void renderDashboard(DynamicArray<Wallet>& wallets) {
               << std::right << std::setw(56) << totalStr << "   |\n";
     std::cout << "+------+-------------+---------------------+------------------------+------------------+\n";
     std::cout << "|  No. | Wallet ID   | Wallet Name         | Current Balance        | Status           |\n";
-    std::cout << "|------+-------------+---------------------+------------------------+------------------|\n";
+    std::cout << "+------+-------------+---------------------+------------------------+------------------+\n";
 
     int count = wallets.getSize();
     if (count == 0) {

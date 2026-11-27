@@ -201,18 +201,10 @@ void handleMasterDataManagement(
     std::cout << "========================================================================================\n";
     std::cout << "                 PERSONAL FINANCE MANAGER > MASTER DATA MANAGEMENT                      \n";
     std::cout << "========================================================================================\n";
-    std::cout << " --- Expense Categories ---\n";
-    if (categories.getSize() == 0) {
-        std::cout << "  (Empty)\n";
-    } else {
-        view(categories);
-    }
-    std::cout << "\n --- Income Sources ---\n";
-    if (sources.getSize() == 0) {
-        std::cout << "  (Empty)\n";
-    } else {
-        view(sources);
-    }
+    std::cout << " Expense Categories:\n";
+    view(categories);
+    std::cout << "\n Income Sources:\n";
+    view(sources);
     std::cout << "\n  [1] Add Expense Category       [4] Add Income Source\n";
     std::cout << "  [2] Edit Expense Category      [5] Edit Income Source\n";
     std::cout << "  [3] Delete Expense Category    [6] Delete Income Source\n";
