@@ -114,3 +114,16 @@ string getWalletNameById(const int& id, DynamicArray<Wallet>& wallets) {
     }
     return "Unknown Wallet";
 }
+
+TransferResult transferBetweenWallets(DynamicArray<Wallet>& wallets,
+                                      int fromId, int toId, double amount) {
+    if(amount <= 0) return TRANSFER_INVALID_AMOUNT;
+    if(fromId == toId) return TRANSFER_SAME_WALLET;
+    int from = findWalletIndexById(fromId, wallets);
+    int to = findWalletIndexById(toId, wallets);
+    if(from == -1 || to == -1) return TRANSFER_WALLET_NOT_FOUND;
+    if(!wallets[from].Withdrawal(amount)) return TRANSFER_INSUFFICIENT_FUNDS;
+    wallets[to].Deposit(amount);
+    return TRANSFER_SUCCEEDED;
+}
+

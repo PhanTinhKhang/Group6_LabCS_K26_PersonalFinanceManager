@@ -48,4 +48,16 @@ void viewWallets(DynamicArray<Wallet>& wallets);
 double getTotalBalance(DynamicArray<Wallet>& wallets);
 std::string getWalletNameById(const int& id, DynamicArray<Wallet>& wallets);
 
+// Wallet Transfer
+enum TransferResult {
+    TRANSFER_SUCCEEDED,
+    TRANSFER_INVALID_AMOUNT,
+    TRANSFER_SAME_WALLET,
+    TRANSFER_WALLET_NOT_FOUND,
+    TRANSFER_INSUFFICIENT_FUNDS
+};
+
+TransferResult transferBetweenWallets(DynamicArray<Wallet>& wallets,
+                                      int fromId, int toId, double amount);
+                                      
 #endif
