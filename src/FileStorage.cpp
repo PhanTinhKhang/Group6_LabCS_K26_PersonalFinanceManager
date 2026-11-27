@@ -1,8 +1,6 @@
 #include "../include/FileStorage.h"
 using namespace std;
 
-// Thống nhất sử dụng string, không đổi vị trí declaration các thuộc tính của private trong các class nữa nha.
-
 void write_string(const string &A, long long &addressptr, long long &str_ptr, ofstream &fout)
 {
     fout.seekp(addressptr, ios::beg);
@@ -160,24 +158,29 @@ bool load(DynamicArray<Wallet> &W, DynamicArray<ExpenseCategory> &Ex,
         cerr << "File open error. \n";
         return false;
     }
-    fin.read((char *)(&W_size), 4);
-    fin.read((char *)(&Ex_size), 4);
-    fin.read((char *)(&So_size), 4);
-    fin.read((char *)(&Tran_size), 4);
-    fin.read((char *)(&Recur_size), 4);
+    fin.read(reinterpret_cast<char *>(&W_size), 4);
+    fin.read(reinterpret_cast<char *>(&Ex_size), 4);
+    fin.read(reinterpret_cast<char *>(&So_size), 4);
+    fin.read(reinterpret_cast<char *>(&Tran_size), 4);
+    fin.read(reinterpret_cast<char *>(&Recur_size), 4);
+    W.clear();
+    Ex.clear();
+    So.clear();
+    Tran.clear();
+    Recur.clear();
     long long cur = 5 * sizeof(int);
 
     for (int i = 0; i < W_size; i++)
-    { // int string double
+    {
         fin.seekg(cur, ios::beg);
         int ID;
         string name;
         double amount;
-        fin.read((char *)(&ID), 4);
+        fin.read(reinterpret_cast<char *>(&ID), 4);
         cur += 4;
         name = read_string(cur, fin);
         fin.seekg(cur, ios::beg);
-        fin.read((char *)(&amount), 8);
+        fin.read(reinterpret_cast<char *>(&amount), 8);
         cur += 8;
         W.push(Wallet(ID, name, amount));
     }
@@ -186,7 +189,7 @@ bool load(DynamicArray<Wallet> &W, DynamicArray<ExpenseCategory> &Ex,
         fin.seekg(cur, ios::beg);
         int ID;
         string name;
-        fin.read((char *)(&ID), 4);
+        fin.read(reinterpret_cast<char *>(&ID), 4);
         cur += 4;
         name = read_string(cur, fin);
         Ex.push(ExpenseCategory(ID, name));
@@ -196,7 +199,7 @@ bool load(DynamicArray<Wallet> &W, DynamicArray<ExpenseCategory> &Ex,
         fin.seekg(cur, ios::beg);
         int ID;
         string name;
-        fin.read((char *)(&ID), 4);
+        fin.read(reinterpret_cast<char *>(&ID), 4);
         cur += 4;
         name = read_string(cur, fin);
         So.push(IncomeSource(ID, name));
@@ -209,13 +212,13 @@ bool load(DynamicArray<Wallet> &W, DynamicArray<ExpenseCategory> &Ex,
         Date date1;
         double dou1;
         string str1;
-        fin.read((char *)(&num1), 4);
+        fin.read(reinterpret_cast<char *>(&num1), 4);
         cur += 4;
         read_date(cur, date1, fin);
         fin.seekg(cur, ios::beg);
-        fin.read((char *)(&num2), 4);
-        fin.read((char *)(&dou1), 8);
-        fin.read((char *)(&num3), 4);
+        fin.read(reinterpret_cast<char *>(&num2), 4);
+        fin.read(reinterpret_cast<char *>(&dou1), 8);
+        fin.read(reinterpret_cast<char *>(&num3), 4);
         cur += 16;
         str1 = read_string(cur, fin);
         Tran.push(Transaction(num1, date1, num2, dou1, num3, str1));
@@ -229,11 +232,11 @@ bool load(DynamicArray<Wallet> &W, DynamicArray<ExpenseCategory> &Ex,
         Date date1, date2;
         string str1, str2;
 
-        fin.read((char *)(&num1), 4);
-        fin.read((char *)(&num4), 4);
-        fin.read((char *)(&num2), 4);
-        fin.read((char *)(&num3), 4);
-        fin.read((char *)(&dou1), 8);
+        fin.read(reinterpret_cast<char *>(&num1), 4);
+        fin.read(reinterpret_cast<char *>(&num4), 4);
+        fin.read(reinterpret_cast<char *>(&num2), 4);
+        fin.read(reinterpret_cast<char *>(&num3), 4);
+        fin.read(reinterpret_cast<char *>(&dou1), 8);
         cur += 24;
         read_date(cur, date1, fin);
         read_date(cur, date2, fin);
