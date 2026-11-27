@@ -9,7 +9,7 @@ void printTransactionTable(
 ){
     int size = list.getSize();
     if (size <= 0) {
-        std::cout << "-> Danh sach giao dich trong!\n";
+        std::cout << "-> Transaction list is empty!\n";
         return;
     }
 
@@ -49,7 +49,7 @@ void printRecurringTransactionsTable(DynamicArray<RecurringTransaction>& list,
     DynamicArray<IncomeSource>& sources) {
     int size = list.getSize();
     if (size <= 0) {
-        std::cout << "-> Danh sach giao dich dinh ky trong!\n";
+        std::cout << "-> Transaction list is empty!\n";
         return;
     }
 
