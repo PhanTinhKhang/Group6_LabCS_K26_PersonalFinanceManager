@@ -2,6 +2,27 @@
 #include "../include/ExpenseCategory.h"
 #include <string>
 
+ExpenseCategory::ExpenseCategory(int ID, string NAME)
+{
+    this->ID = ID;
+    this->NAME = NAME;
+}
+
+int ExpenseCategory::get_id() const
+{
+    return this->ID;
+}
+
+string ExpenseCategory::get_name() const
+{
+    return this->NAME;
+}
+
+void ExpenseCategory::edit_Category(string newNAME)
+{
+    this->NAME = newNAME;
+}
+
 void set_name(ExpenseCategory &item)
 {
     string nName;
@@ -34,47 +55,53 @@ bool search(int ID, DynamicArray<ExpenseCategory> &storage, int &idx)
     return false;
 }
 
-void print(ExpenseCategory item)
+void print(ExpenseCategory item, ostream &fout)
 {
-    cout << item.get_id() << ": " << item.get_name() << '\n';
+    fout << item.get_id() << ": " << item.get_name() << '\n';
     return;
 }
 
-void add(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item)
+bool add(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item)
 {
     int add_idx;
     if (search(item.get_id(), storage, add_idx))
     {
-        cout << "Item insertion unsuccessfully (ID already exist).\n";
+        return false;
     }
     else
     {
         storage.insert(item, add_idx);
-        cout << "Item inserted successfully.\n";
+        return true;
     }
 }
 
-void del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item)
+bool del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item)
 {
     int del_idx;
     if (search(item.get_id(), storage, del_idx))
     {
         storage.pop(del_idx);
-        cout << "Item deleted successfully.\n";
+        return true;
     }
     else
     {
-        cout << "Item not found.\n";
+        return false;
     }
 }
 
-void view(DynamicArray<ExpenseCategory> &storage)
+void view(DynamicArray<ExpenseCategory> &storage, ostream &fout)
 {
     int sz = storage.getSize();
+    if (sz == 0)
+    {
+        fout << "Expense category list is empty.\n";
+        return;
+    }
     for (int i = 0; i < sz; i++)
     {
-        print(storage[i]);
+        print(storage[i], fout);
     }
+    return;
 }
 
 string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage)
@@ -84,5 +111,5 @@ string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage)
     {
         return storage[idx].get_name();
     }
-    return "Item not found.";
+    return (string)("Item not found.");
 }

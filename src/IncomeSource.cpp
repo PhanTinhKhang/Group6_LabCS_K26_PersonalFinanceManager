@@ -2,6 +2,27 @@
 #include "../include/IncomeSource.h"
 #include <string>
 
+IncomeSource::IncomeSource(int ID, string NAME)
+{
+    this->ID = ID;
+    this->NAME = NAME;
+}
+
+int IncomeSource::get_id() const
+{
+    return (this->ID);
+}
+
+string IncomeSource::get_name() const
+{
+    return this->NAME;
+}
+
+void IncomeSource::edit_IncomeSource(string newNAME)
+{
+    this->NAME = newNAME;
+}
+
 void set_name(IncomeSource &item)
 {
     string nName;
@@ -34,47 +55,52 @@ bool search(int ID, DynamicArray<IncomeSource> &storage, int &idx)
     return false;
 }
 
-void print(IncomeSource item)
+void print(const IncomeSource &item, ostream &fout)
 {
-    cout << item.get_id() << ": " << item.get_name() << '\n';
+    fout << item.get_id() << ": " << item.get_name() << '\n';
     return;
 }
 
-void add(DynamicArray<IncomeSource> &storage, IncomeSource item)
+bool add(DynamicArray<IncomeSource> &storage, IncomeSource item)
 {
     int add_idx;
     if (search(item.get_id(), storage, add_idx))
     {
-        cout << "Item insertion unsuccessfully (ID already exist).\n";
+        return false;
     }
     else
     {
         storage.insert(item, add_idx);
-        cout << "Item inserted successfully.\n";
+        return true;
     }
 }
 
-void del(DynamicArray<IncomeSource> &storage, IncomeSource item)
+bool del(DynamicArray<IncomeSource> &storage, IncomeSource item)
 {
     int del_idx;
     if (search(item.get_id(), storage, del_idx))
     {
         storage.pop(del_idx);
-        cout << "Item deleted successfully.\n";
+        return true;
     }
     else
     {
-        cout << "Item not found.\n";
+        return false;
     }
 }
 
-void view(DynamicArray<IncomeSource> &storage)
+void view(DynamicArray<IncomeSource> &storage, ostream &fout)
 {
     int sz = storage.getSize();
+    if(sz == 0){
+        fout << "Income source list is empty. \n";
+        return;
+    }
     for (int i = 0; i < sz; i++)
     {
-        print(storage[i]);
+        print(storage[i], fout);
     }
+    return;
 }
 
 string getSourceNameById(int ID, DynamicArray<IncomeSource> &storage)
@@ -84,5 +110,5 @@ string getSourceNameById(int ID, DynamicArray<IncomeSource> &storage)
     {
         return storage[idx].get_name();
     }
-    return "Item not found.";
+    return (string)("Item not found.");
 }

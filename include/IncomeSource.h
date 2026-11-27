@@ -1,7 +1,8 @@
 #ifndef IncomeSource_H
 #define IncomeSource_H
-#include "DynamicArray.h"
-#include <bits/stdc++.h>
+#include "dynamicArray.h"
+#include <string>
+#include <iostream>
 using namespace std;
 
 class IncomeSource
@@ -13,36 +14,23 @@ private:
 public:
     IncomeSource() : ID(0), NAME("") {}
 
-    IncomeSource(int ID, string NAME)
-    {
-        this->ID = ID;
-        this->NAME = NAME;
-    }
-    int get_id() const
-    {
-        return this->ID;
-    }
-    string get_name() const
-    {
-        return this->NAME;
-    }
-    void edit_IncomeSource(string newNAME)
-    {
-        this->NAME = newNAME;
-    }
+    IncomeSource(int ID, string NAME);
+    int get_id() const;
+    string get_name() const;
+    void edit_IncomeSource(string newNAME);
 };
+
+void set_name(IncomeSource &item);
 
 bool search(int ID, DynamicArray<IncomeSource> &storage, int &idx);
 
-void print(IncomeSource item);
+void print(const IncomeSource &item, ostream &fout);
 
-bool operator<(IncomeSource item1, IncomeSource item2);
+bool add(DynamicArray<IncomeSource> &storage, IncomeSource item);
 
-void add(DynamicArray<IncomeSource> &storage, IncomeSource item);
+bool del(DynamicArray<IncomeSource> &storage, IncomeSource item);
 
-void del(DynamicArray<IncomeSource> &storage, IncomeSource item);
-
-void view(DynamicArray<IncomeSource> &storage);
+void view(DynamicArray<IncomeSource> &storage, ostream &fout);
 
 string getSourceNameById(int ID, DynamicArray<IncomeSource> &storage);
 

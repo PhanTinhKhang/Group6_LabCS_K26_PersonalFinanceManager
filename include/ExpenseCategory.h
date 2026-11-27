@@ -1,7 +1,8 @@
 #ifndef ExpenseCategory_H
 #define ExpenseCategory_H
-#include "DynamicArray.h"
-#include <bits/stdc++.h>
+#include "dynamicArray.h"
+#include<string>
+#include<iostream>
 using namespace std;
 
 class ExpenseCategory
@@ -13,38 +14,23 @@ private:
 public:
     ExpenseCategory() : ID(0), NAME("") {}
 
-    ExpenseCategory(int ID, string NAME)
-    {
-        this->ID = ID;
-        this->NAME = NAME;
-    }
-    int get_id() const
-    {
-        return this->ID;
-    }
-    string get_name() const
-    {
-        return this->NAME;
-    }
-    void edit_Category(string newNAME)
-    {
-        this->NAME = newNAME;
-    }
+    ExpenseCategory(int ID, string NAME);
+    int get_id() const;
+    string get_name() const;
+    void edit_Category(string newNAME);
 };
 
 void set_name(ExpenseCategory &item);
 
-bool operator<(ExpenseCategory item1, ExpenseCategory item2);
-
 bool search(int ID, DynamicArray<ExpenseCategory> &storage, int &idx);
 
-void print(ExpenseCategory item);
+void print(ExpenseCategory item, ostream &fout);
 
-void add(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
+bool add(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
 
-void del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
+bool del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
 
-void view(DynamicArray<ExpenseCategory> &storage);
+void view(DynamicArray<ExpenseCategory> &storage, ostream &fout);
 
 string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage);
 

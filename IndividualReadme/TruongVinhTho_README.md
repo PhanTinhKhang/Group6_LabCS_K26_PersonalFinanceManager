@@ -86,3 +86,28 @@
 | `src/FileStorage.cpp`                      | Source        | define function for reading and writing user information to binary file  |
 | `test/test_filestorage.cpp`                | Test Source   | test save and load function declared in include/FileStorage.h            |
 | `IndivisualReadme/TruongVinhTho_README.md` | Documentation | Personal weekly log and milestone tracker                                |
+
+### Week 4: Improve declared function
+
+- **Brach:** `main`
+
+#### Work done:
+
+- [x] **IncomeSource and ExpenseCategory:** Separate declaration and implementation for ExpenseCategory and IncomeSource's functions.
+
+- [x] **FileStorage:** Replace C-style(char*) cast with C++ reinterpret_cast<char*> in FileStorage.cpp
+
+#### Key Commits:
+
+    - Separate class implementations and casting style in FileStorage.cpp
+
+---
+
+## Cumulative Contributions & File Registry
+
+| File / Component                           | Type          | Description                                                   |
+| :----------------------------------------- | :------------ | :------------------------------------------------------------ |
+| `include/IncomeSource.h`                   | Header        | moving implementation to 'src/IncomeSource.cpp'               |
+| `src/FileStorage.cpp`                      | Source        | replace char* with reinterpret_cast<char*>                    |
+| `test/test_filestorage.cpp`                | Test Source   | test save and load function declared in include/FileStorage.h |
+| `IndivisualReadme/TruongVinhTho_README.md` | Documentation | Personal weekly log and milestone tracker                     |
