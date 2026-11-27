@@ -99,7 +99,7 @@
 
 #### Key Commits:
 
-    - Separate class implementations and casting style in FileStorage.cpp
+    - Separate class implementations and change cast style in FileStorage.cpp
 
 ---
 

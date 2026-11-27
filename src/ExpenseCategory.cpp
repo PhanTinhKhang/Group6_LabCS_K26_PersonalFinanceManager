@@ -1,6 +1,9 @@
 #include "../include/DynamicArray.h"
 #include "../include/ExpenseCategory.h"
+#include "../include/UITheme.h"
 #include <string>
+#include <iostream>
+#include <iomanip>
 
 ExpenseCategory::ExpenseCategory(int ID, string NAME)
 {
@@ -94,14 +97,26 @@ void view(DynamicArray<ExpenseCategory> &storage, ostream &fout)
     int sz = storage.getSize();
     if (sz == 0)
     {
-        fout << "Expense category list is empty.\n";
+        fout << Color::CYAN << "+------+------------------------------------------+\n";
+        fout << "|  ID  | Expense Category Name                    |\n";
+        fout << "+------+------------------------------------------+\n";
+        fout << "|  No active expense categories defined.          |\n";
+        fout << "+------+------------------------------------------+\n"
+             << Color::RESET;
         return;
     }
+    fout << Color::CYAN << "+------+------------------------------------------+\n";
+    fout << "|  ID  | Expense Category Name                    |\n";
+    fout << "+------+------------------------------------------+\n"
+         << Color::RESET;
     for (int i = 0; i < sz; i++)
     {
-        print(storage[i], fout);
+        fout << Color::CYAN << "| " << Color::YELLOW << right << setw(4) << storage[i].get_id() << Color::RESET
+             << Color::CYAN << " | " << Color::WHITE << left << setw(40) << storage[i].get_name() << Color::RESET << Color::CYAN << " |\n"
+             << Color::RESET;
     }
-    return;
+    fout << Color::CYAN << "+------+------------------------------------------+\n"
+         << Color::RESET;
 }
 
 string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage)

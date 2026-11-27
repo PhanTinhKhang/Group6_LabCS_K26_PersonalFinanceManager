@@ -100,6 +100,22 @@
 * `test: add comprehensive automated unit test suite for RecurringManager`
 * `fix: fix TransactionList.cpp and testing`
 
+### Week 4: Financial Statistics & Reporting Module (`Statistics`)
+
+* **Branch:** `feature/Statistics`
+
+#### Tasks Completed:
+
+* \[x\] **Statistics Module Header & Interface Design (Task 1):**
+
+  * Created `include/Statistics.h` declaring the 5 core reporting functions: `reportTimeBasedSummary`, `reportWalletBreakdown`, `reportMultiYearOverview`, `reportIncomeBreakdownBySource`, and `reportExpenseBreakdownByCategory`.
+
+  * Adding features to show statistics in functions `reportTimeBasedSummary`, `reportWalletBreakdown`, `reportMultiYearOverview`, `reportIncomeBreakdownBySource`, and `reportExpenseBreakdownByCategory`.
+
+  #### Key Commits / PRs:
+
+* `feat: adding functions to hanle statistic reports.`
+
 ## Cumulative Contributions & File Registry
 
 | File / Component | Type | Responsibility / Description | 
@@ -110,4 +126,6 @@
 | `test/test_transactionlist.cpp` | Test Source | Testing formatted recurring transactions table printing | 
 | `src/RecurringManager.cpp` | Source | Automated recurring transaction processing engine on startup | 
 | `test/test_recurring_manager.cpp` | Test Source | Automated unit testing for recurring transactions execution and duplicate prevention | 
+| `include/Statistics.h` | Header | Declarations for time-based, wallet-based, multi-year, and category/source breakdown reports | 
+| `src/Statistics.cpp` | Source | Implementation of all financial statistics and reporting functions | 
 | `IndividualReadme/LamThanhPhuc_README.md` | Documentation | Personal weekly progress log and milestone tracker | 

@@ -1,6 +1,9 @@
 #include "../include/DynamicArray.h"
 #include "../include/IncomeSource.h"
+#include "../include/UITheme.h"
 #include <string>
+#include <iostream>
+#include <iomanip>
 
 IncomeSource::IncomeSource(int ID, string NAME)
 {
@@ -92,15 +95,28 @@ bool del(DynamicArray<IncomeSource> &storage, IncomeSource item)
 void view(DynamicArray<IncomeSource> &storage, ostream &fout)
 {
     int sz = storage.getSize();
-    if(sz == 0){
-        fout << "Income source list is empty. \n";
+    if (sz == 0)
+    {
+        fout << Color::CYAN << "+------+------------------------------------------+\n";
+        fout << "|  ID  | Income Source Name                       |\n";
+        fout << "+------+------------------------------------------+\n";
+        fout << "|  No active income sources defined.               |\n";
+        fout << "+------+------------------------------------------+\n"
+             << Color::RESET;
         return;
     }
+    fout << Color::CYAN << "+------+------------------------------------------+\n";
+    fout << "|  ID  | Income Source Name                       |\n";
+    fout << "+------+------------------------------------------+\n"
+         << Color::RESET;
     for (int i = 0; i < sz; i++)
     {
-        print(storage[i], fout);
+        fout << Color::CYAN << "| " << Color::YELLOW << right << setw(4) << storage[i].get_id() << Color::RESET
+             << Color::CYAN << " | " << Color::WHITE << left << setw(40) << storage[i].get_name() << Color::RESET << Color::CYAN << " |\n"
+             << Color::RESET;
     }
-    return;
+    fout << Color::CYAN << "+------+------------------------------------------+\n"
+         << Color::RESET;
 }
 
 string getSourceNameById(int ID, DynamicArray<IncomeSource> &storage)
