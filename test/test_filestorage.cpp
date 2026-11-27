@@ -2,7 +2,7 @@
 using namespace std;
 
 // test result is good :)
-// g++ -I../include test_filestorage.cpp ../src/FileStorage.cpp ../src/Date.cpp ../src/Wallet.cpp ../src/ExpenseCategory.cpp ../src/IncomeSource.cpp ../src/Transaction.cpp ../src/RecurringManager.cpp -o run
+// g++ -I../include test_filestorage.cpp ../src/FileStorage.cpp ../src/Date.cpp ../src/Wallet.cpp ../src/ExpenseCategory.cpp ../src/IncomeSource.cpp ../src/Transaction.cpp ../src/RecurringTransaction.cpp -o run
 
 void Print(Wallet A)
 {
