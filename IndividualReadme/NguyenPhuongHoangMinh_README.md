@@ -88,4 +88,43 @@
 | `IndividualReadme/NguyenPhuongHoangMinh_README.md` | Documentation | Personal weekly log and milestone tracker |
 
 ---
-**Update date: 20/11/2026**
+
+### Week 4: Wallet Transfer
+* **Branch:** `feature/WalletTransfer`
+
+#### Tasks Completed:
+- [x] **Transfer Logic:**
+  - Implemented `transferBetweenWallets(wallets, fromId, toId, amount)` using the existing `Withdrawal()` and `Deposit()`.
+  - Returns a `TransferResult` code (`TRANSFER_SUCCEEDED`, `TRANSFER_INVALID_AMOUNT`, `TRANSFER_SAME_WALLET`, `TRANSFER_WALLET_NOT_FOUND`, `TRANSFER_INSUFFICIENT_FUNDS`) instead of printing, so the UI layer decides the message.
+  - Balances are changed only after every check passes, so a rejected transfer never alters any wallet.
+- [x] **Transfer UI:**
+  - Implemented `handleWalletTransfer(wallets)`: reads source wallet ID, destination wallet ID and amount with the validator (`readInt`, `readDouble`), calls the transfer function, and prints a `[SUCCESS]` / `[ERROR]` message matching the result code.
+- [x] **Testing:**
+  - Added `testTransfer()` to `test/test_wallet_crud.cpp`, covering a valid transfer, transferring the exact balance, insufficient funds, amount ≤ 0, same wallet, missing source/destination wallet, unchanged balances after rejections, and total balance preserved.
+
+---
+
+## Cumulative Contributions & File Registry
+
+| File / Component | Type | Responsibility / Description |
+| :--- | :--- | :--- |
+| `include/Wallet.h` | Header | Wallet entity (ID, name, balance, deposit/withdrawal) and `TransferResult` / `transferBetweenWallets` declarations |
+| `src/Wallet.cpp` | Source | `transferBetweenWallets()` added alongside the wallet CRUD |
+| `include/Transaction.h` | Header | Transaction entity and `TransactionType` enum |
+| `src/Transaction.cpp` | Source | `printTrans()` (moved out of header to avoid multiple definitions) |
+| `include/IncomeRecord.h` | Header | Income record function declarations |
+| `src/IncomeRecord.cpp` | Source | Income input and processing |
+| `include/ExpenseRecord.h` | Header | Expense record function declarations |
+| `src/ExpenseRecord.cpp` | Source | Expense input and processing |
+| `include/InputValidator.h` | Header | Parsing, re-prompt and ID existence check declarations |
+| `src/InputValidator.cpp` | Source | Implementation of `parseDate/Int/Double`, `read...`, `exist...` |
+| `include/WalletTransferUI.h` | Header | Declaration of `handleWalletTransfer()` |
+| `src/WalletTransferUI.cpp` | Source | Wallet transfer input and result messages |
+| `test/test_WALLET_TRANSACTION.cpp` | Test Source | Tests for Wallet and Transaction |
+| `test/test_income_expense.cpp` | Test Source | Tests for Income/Expense records |
+| `test/test_validator.cpp` | Test Source | Tests for InputValidator |
+| `test/test_wallet_crud.cpp` | Test Source | Wallet CRUD tests, extended with wallet transfer tests |
+| `IndividualReadme/NguyenPhuongHoangMinh_README.md` | Documentation | Personal weekly log and milestone tracker |
+
+---
+**Update date: 27/11/2026**
