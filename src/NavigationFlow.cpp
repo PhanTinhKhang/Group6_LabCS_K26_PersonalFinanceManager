@@ -1,9 +1,9 @@
 #include "../include/NavigationFlow.h"
 #include "../include/Persistence.h"
-#include "../include/FinancialReport.h"
 #include "../include/IncomeRecord.h"
 #include "../include/ExpenseRecord.h"
 #include "../include/InputValidator.h"
+#include "../include/UITheme.h"
 #include <iostream>
 
 static int readSubmenuChoice(const std::string& prompt, int minChoice, int maxChoice) {
@@ -19,7 +19,7 @@ static int readSubmenuChoice(const std::string& prompt, int minChoice, int maxCh
         if (parseInt(trimmed, val) && val >= minChoice && val <= maxChoice) {
             return val;
         }
-        std::cout << " [!] Invalid choice. Please enter a number from " << minChoice << " to " << maxChoice << ".\n";
+        std::cout << " " << Color::BOLD << Color::RED << "[!]" << Color::RESET << " Invalid choice. Please enter a number from " << minChoice << " to " << maxChoice << ".\n";
     }
 }
 
@@ -32,7 +32,7 @@ static std::string readNonEmptyLine(const std::string& prompt) {
         if (!trimmed.empty()) {
             return trimmed;
         }
-        std::cout << " [!] Input cannot be empty. Please try again.\n";
+        std::cout << " " << Color::BOLD << Color::RED << "[!]" << Color::RESET << " Input cannot be empty. Please try again.\n";
     }
 }
 
@@ -49,7 +49,7 @@ static double readNonNegativeBalance(const std::string& prompt) {
         if (parseDouble(trimmed, val)) {
             return val;
         }
-        std::cout << " [!] Invalid balance. Enter 0 or a positive number.\n";
+        std::cout << " " << Color::BOLD << Color::RED << "[!]" << Color::RESET << " Invalid balance. Enter 0 or a positive number.\n";
     }
 }
 
@@ -60,6 +60,7 @@ void initializeApp(
     DynamicArray<Transaction>& transactions,
     DynamicArray<RecurringTransaction>& recurringList
 ) {
+    initConsole();
     if (!loadDataFromFile(DATA_FILE, wallets, categories, sources, transactions, recurringList)) {
         seedDefaultData(wallets, categories, sources);
     }
@@ -73,19 +74,17 @@ void handleRecordIncome(
     DynamicArray<Transaction>& transactions
 ) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "                 PERSONAL FINANCE MANAGER > RECORD INCOME TRANSACTION                   \n";
-    std::cout << "========================================================================================\n";
+    printHeader("RECORD INCOME TRANSACTION");
 
     if (sources.getSize() == 0 || wallets.getSize() == 0) {
-        std::cout << " [ERROR] You must have at least one Income Source and one Wallet before recording.\n";
+        std::cout << " " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " You must have at least one Income Source and one Wallet before recording.\n";
         pauseScreen();
         return;
     }
 
-    std::cout << "Available Income Sources:\n";
+    std::cout << " " << Color::BOLD << Color::WHITE << "Available Income Sources:" << Color::RESET << "\n";
     view(sources);
-    std::cout << "\nAvailable Wallets:\n";
+    std::cout << "\n " << Color::BOLD << Color::WHITE << "Available Wallets:" << Color::RESET << "\n";
     viewWallets(wallets);
     std::cout << "\n";
 
@@ -98,10 +97,10 @@ void handleRecordIncome(
     inputIncome(date, sourceId, amount, walletId, desc);
 
     if (addIncome(wallets, sources, transactions, date, sourceId, amount, walletId, desc)) {
-        std::cout << "\n [SUCCESS] Recorded income +" << formatCurrency(amount)
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Recorded income +" << formatCurrency(amount)
                   << " into '" << getWalletNameById(walletId, wallets) << "' successfully!\n";
     } else {
-        std::cout << "\n [ERROR] Failed to record income. Please check Source ID, Wallet ID, and Amount.\n";
+        std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Failed to record income. Please check Source ID, Wallet ID, and Amount.\n";
     }
     pauseScreen();
 }
@@ -112,19 +111,17 @@ void handleRecordExpense(
     DynamicArray<Transaction>& transactions
 ) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "                PERSONAL FINANCE MANAGER > RECORD EXPENSE TRANSACTION                   \n";
-    std::cout << "========================================================================================\n";
+    printHeader("RECORD EXPENSE TRANSACTION");
 
     if (categories.getSize() == 0 || wallets.getSize() == 0) {
-        std::cout << " [ERROR] You must have at least one Expense Category and one Wallet before recording.\n";
+        std::cout << " " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " You must have at least one Expense Category and one Wallet before recording.\n";
         pauseScreen();
         return;
     }
 
-    std::cout << "Available Expense Categories:\n";
+    std::cout << " " << Color::BOLD << Color::WHITE << "Available Expense Categories:" << Color::RESET << "\n";
     view(categories);
-    std::cout << "\nAvailable Wallets:\n";
+    std::cout << "\n " << Color::BOLD << Color::WHITE << "Available Wallets:" << Color::RESET << "\n";
     viewWallets(wallets);
     std::cout << "\n";
 
@@ -137,28 +134,26 @@ void handleRecordExpense(
     inputExpense(date, cateId, amount, walletId, desc);
 
     if (addExpense(wallets, categories, transactions, date, cateId, amount, walletId, desc)) {
-        std::cout << "\n [SUCCESS] Recorded expense -" << formatCurrency(amount)
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Recorded expense -" << formatCurrency(amount)
                   << " from '" << getWalletNameById(walletId, wallets) << "' successfully!\n";
     } else {
-        std::cout << "\n [ERROR] Failed to record expense. Insufficient balance or invalid Category/Wallet ID.\n";
+        std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Failed to record expense. Insufficient balance or invalid Category/Wallet ID.\n";
     }
     pauseScreen();
 }
 
 void handleWalletManagement(DynamicArray<Wallet>& wallets) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "                   PERSONAL FINANCE MANAGER > WALLET MANAGEMENT                         \n";
-    std::cout << "========================================================================================\n";
+    printHeader("WALLET MANAGEMENT");
     viewWallets(wallets);
-    std::cout << "\n  [1] Create New Wallet\n";
-    std::cout << "  [2] Edit Wallet Name\n";
-    std::cout << "  [3] Delete Wallet\n";
-    std::cout << "  [4] View Wallets Overview\n";
-    std::cout << "  [0] Return to Dashboard\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    std::cout << "\n  " << Color::CYAN << "[1]" << Color::RESET << " Create New Wallet\n";
+    std::cout << "  " << Color::CYAN << "[2]" << Color::RESET << " Edit Wallet Name\n";
+    std::cout << "  " << Color::CYAN << "[3]" << Color::RESET << " Delete Wallet\n";
+    std::cout << "  " << Color::CYAN << "[4]" << Color::RESET << " View Wallets Overview\n";
+    std::cout << "  " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
+    std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice(" [?] Select option (0 - 4): ", 0, 4);
+    int choice = readSubmenuChoice("  ▸ Select option (0 - 4): ", 0, 4);
     if (choice == 0) {
         return;
     }
@@ -169,7 +164,7 @@ void handleWalletManagement(DynamicArray<Wallet>& wallets) {
         std::string name = readNonEmptyLine(" Enter Wallet Name: ");
         double balance = readNonNegativeBalance(" Enter Initial Balance (VND): ");
         if (createWallet(wallets, id, name, balance)) {
-            std::cout << "\n [SUCCESS] Wallet '" << name << "' (ID: " << id << ") created successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Wallet '" << name << "' (ID: " << id << ") created successfully!\n";
         }
         pauseScreen();
     } else if (choice == 2) {
@@ -177,18 +172,18 @@ void handleWalletManagement(DynamicArray<Wallet>& wallets) {
         readInt(" Enter Wallet ID to rename: ", id);
         std::string newName = readNonEmptyLine(" Enter new Wallet Name: ");
         if (editWalletName(wallets, id, newName)) {
-            std::cout << "\n [SUCCESS] Wallet ID " << id << " renamed to '" << newName << "' successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Wallet ID " << id << " renamed to '" << newName << "' successfully!\n";
         }
         pauseScreen();
     } else if (choice == 3) {
         int id = 0;
         readInt(" Enter Wallet ID to delete: ", id);
         if (deleteWallet(wallets, id)) {
-            std::cout << "\n [SUCCESS] Wallet ID " << id << " deleted successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Wallet ID " << id << " deleted successfully!\n";
         }
         pauseScreen();
     } else if (choice == 4) {
-        std::cout << "\n [SUCCESS] Wallet overview displayed successfully.\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Wallet overview displayed successfully.\n";
         pauseScreen();
     }
 }
@@ -198,28 +193,18 @@ void handleMasterDataManagement(
     DynamicArray<IncomeSource>& sources
 ) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "                 PERSONAL FINANCE MANAGER > MASTER DATA MANAGEMENT                      \n";
-    std::cout << "========================================================================================\n";
-    std::cout << " --- Expense Categories ---\n";
-    if (categories.getSize() == 0) {
-        std::cout << "  (Empty)\n";
-    } else {
-        view(categories);
-    }
-    std::cout << "\n --- Income Sources ---\n";
-    if (sources.getSize() == 0) {
-        std::cout << "  (Empty)\n";
-    } else {
-        view(sources);
-    }
-    std::cout << "\n  [1] Add Expense Category       [4] Add Income Source\n";
-    std::cout << "  [2] Edit Expense Category      [5] Edit Income Source\n";
-    std::cout << "  [3] Delete Expense Category    [6] Delete Income Source\n";
-    std::cout << "  [7] View Master Data           [0] Return to Dashboard\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    printHeader("MASTER DATA MANAGEMENT");
+    std::cout << " " << Color::BOLD << Color::WHITE << "Expense Categories:" << Color::RESET << "\n";
+    view(categories);
+    std::cout << "\n " << Color::BOLD << Color::WHITE << "Income Sources:" << Color::RESET << "\n";
+    view(sources);
+    std::cout << "\n  " << Color::CYAN << "[1]" << Color::RESET << " Add Expense Category       " << Color::CYAN << "[4]" << Color::RESET << " Add Income Source\n";
+    std::cout << "  " << Color::CYAN << "[2]" << Color::RESET << " Edit Expense Category      " << Color::CYAN << "[5]" << Color::RESET << " Edit Income Source\n";
+    std::cout << "  " << Color::CYAN << "[3]" << Color::RESET << " Delete Expense Category    " << Color::CYAN << "[6]" << Color::RESET << " Delete Income Source\n";
+    std::cout << "  " << Color::CYAN << "[7]" << Color::RESET << " View Master Data           " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
+    std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice(" [?] Select option (0 - 7): ", 0, 7);
+    int choice = readSubmenuChoice("  ▸ Select option (0 - 7): ", 0, 7);
     if (choice == 0) {
         return;
     }
@@ -229,7 +214,7 @@ void handleMasterDataManagement(
         readInt(" Enter Expense Category ID (positive integer): ", id);
         std::string name = readNonEmptyLine(" Enter Category Name: ");
         add(categories, ExpenseCategory(id, name));
-        std::cout << "\n [SUCCESS] Expense Category '" << name << "' added successfully!\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Expense Category '" << name << "' added successfully!\n";
         pauseScreen();
     } else if (choice == 2) {
         int id = 0;
@@ -238,23 +223,23 @@ void handleMasterDataManagement(
         if (search(id, categories, idx)) {
             std::string newName = readNonEmptyLine(" Enter new Category Name: ");
             categories[idx].edit_Category(newName);
-            std::cout << "\n [SUCCESS] Expense Category ID " << id << " updated to '" << newName << "' successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Expense Category ID " << id << " updated to '" << newName << "' successfully!\n";
         } else {
-            std::cout << "\n [ERROR] Expense Category ID " << id << " not found.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Expense Category ID " << id << " not found.\n";
         }
         pauseScreen();
     } else if (choice == 3) {
         int id = 0;
         readInt(" Enter Expense Category ID to delete: ", id);
         del(categories, ExpenseCategory(id, ""));
-        std::cout << "\n [SUCCESS] Expense Category ID " << id << " deletion processed successfully!\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Expense Category ID " << id << " deletion processed successfully!\n";
         pauseScreen();
     } else if (choice == 4) {
         int id = 0;
         readInt(" Enter Income Source ID (positive integer): ", id);
         std::string name = readNonEmptyLine(" Enter Source Name: ");
         add(sources, IncomeSource(id, name));
-        std::cout << "\n [SUCCESS] Income Source '" << name << "' added successfully!\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Income Source '" << name << "' added successfully!\n";
         pauseScreen();
     } else if (choice == 5) {
         int id = 0;
@@ -263,19 +248,19 @@ void handleMasterDataManagement(
         if (search(id, sources, idx)) {
             std::string newName = readNonEmptyLine(" Enter new Source Name: ");
             sources[idx].edit_IncomeSource(newName);
-            std::cout << "\n [SUCCESS] Income Source ID " << id << " updated to '" << newName << "' successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Income Source ID " << id << " updated to '" << newName << "' successfully!\n";
         } else {
-            std::cout << "\n [ERROR] Income Source ID " << id << " not found.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Income Source ID " << id << " not found.\n";
         }
         pauseScreen();
     } else if (choice == 6) {
         int id = 0;
         readInt(" Enter Income Source ID to delete: ", id);
         del(sources, IncomeSource(id, ""));
-        std::cout << "\n [SUCCESS] Income Source ID " << id << " deletion processed successfully!\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Income Source ID " << id << " deletion processed successfully!\n";
         pauseScreen();
     } else if (choice == 7) {
-        std::cout << "\n [SUCCESS] Master data list displayed successfully.\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Master data list displayed successfully.\n";
         pauseScreen();
     }
 }
@@ -288,25 +273,23 @@ void handleRecurringTransactions(
     DynamicArray<IncomeSource>& sources
 ) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "            PERSONAL FINANCE MANAGER > RECURRING TRANSACTIONS (MONTHLY)                 \n";
-    std::cout << "========================================================================================\n";
+    printHeader("RECURRING TRANSACTIONS (MONTHLY)");
     printRecurringTransactionsTable(recurringList, wallets, categories, sources);
-    std::cout << "\n  [1] Add Recurring Rule\n";
-    std::cout << "  [2] Process Recurring Rules for Current Month\n";
-    std::cout << "  [3] Delete Recurring Rule\n";
-    std::cout << "  [4] View Recurring Rules Table\n";
-    std::cout << "  [0] Return to Dashboard\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    std::cout << "\n  " << Color::CYAN << "[1]" << Color::RESET << " Add Recurring Rule\n";
+    std::cout << "  " << Color::CYAN << "[2]" << Color::RESET << " Process Recurring Rules for Current Month\n";
+    std::cout << "  " << Color::CYAN << "[3]" << Color::RESET << " Delete Recurring Rule\n";
+    std::cout << "  " << Color::CYAN << "[4]" << Color::RESET << " View Recurring Rules Table\n";
+    std::cout << "  " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
+    std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice(" [?] Select option (0 - 4): ", 0, 4);
+    int choice = readSubmenuChoice("  ▸ Select option (0 - 4): ", 0, 4);
     if (choice == 0) {
         return;
     }
 
     if (choice == 1) {
         if (wallets.getSize() == 0) {
-            std::cout << "\n [ERROR] Please create a wallet first.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Please create a wallet first.\n";
             pauseScreen();
             return;
         }
@@ -320,7 +303,7 @@ void handleRecurringTransactions(
             }
         }
         if (duplicate) {
-            std::cout << "\n [ERROR] Recurring Rule ID already exists.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Recurring Rule ID already exists.\n";
             pauseScreen();
             return;
         }
@@ -331,27 +314,27 @@ void handleRecurringTransactions(
         int srcOrCatId = 0;
         if (txType == Income) {
             if (sources.getSize() == 0) {
-                std::cout << "\n [ERROR] No income sources available.\n";
+                std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " No income sources available.\n";
                 pauseScreen();
                 return;
             }
             view(sources);
             readInt(" Enter Income Source ID: ", srcOrCatId);
             if (!existIncome(sources, srcOrCatId)) {
-                std::cout << "\n [ERROR] Income Source ID not found.\n";
+                std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Income Source ID not found.\n";
                 pauseScreen();
                 return;
             }
         } else {
             if (categories.getSize() == 0) {
-                std::cout << "\n [ERROR] No expense categories available.\n";
+                std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " No expense categories available.\n";
                 pauseScreen();
                 return;
             }
             view(categories);
             readInt(" Enter Expense Category ID: ", srcOrCatId);
             if (!existExpense(categories, srcOrCatId)) {
-                std::cout << "\n [ERROR] Expense Category ID not found.\n";
+                std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Expense Category ID not found.\n";
                 pauseScreen();
                 return;
             }
@@ -361,7 +344,7 @@ void handleRecurringTransactions(
         int walletId = 0;
         readInt(" Enter Target Wallet ID: ", walletId);
         if (!existWallet(wallets, walletId)) {
-            std::cout << "\n [ERROR] Wallet ID not found.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Wallet ID not found.\n";
             pauseScreen();
             return;
         }
@@ -386,17 +369,17 @@ void handleRecurringTransactions(
                 endDate = parsedEnd;
                 break;
             }
-            std::cout << " [!] Invalid End Date (must be valid and >= Start Date).\n";
+            std::cout << " " << Color::BOLD << Color::RED << "[!]" << Color::RESET << " Invalid End Date (must be valid and >= Start Date).\n";
         }
 
         std::string desc = readNonEmptyLine(" Enter Description: ");
         recurringList.push(RecurringTransaction(id, txType, srcOrCatId, walletId, amount, startDate, endDate, "", desc));
-        std::cout << "\n [SUCCESS] Recurring rule ID " << id << " added successfully!\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Recurring rule ID " << id << " added successfully!\n";
         pauseScreen();
     } else if (choice == 2) {
         std::cout << "\n";
         processRecurringTransactions(recurringList, transactions, wallets);
-        std::cout << "\n [SUCCESS] Recurring transactions cycle processed successfully!\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Recurring transactions cycle processed successfully!\n";
         pauseScreen();
     } else if (choice == 3) {
         int id = 0;
@@ -410,13 +393,13 @@ void handleRecurringTransactions(
         }
         if (foundIdx != -1) {
             recurringList.pop(foundIdx);
-            std::cout << "\n [SUCCESS] Recurring rule ID " << id << " deleted successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Recurring rule ID " << id << " deleted successfully!\n";
         } else {
-            std::cout << "\n [ERROR] Recurring Rule ID not found.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Recurring Rule ID not found.\n";
         }
         pauseScreen();
     } else if (choice == 4) {
-        std::cout << "\n [SUCCESS] Recurring rules overview displayed successfully.\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Recurring rules overview displayed successfully.\n";
         pauseScreen();
     }
 }
@@ -428,46 +411,22 @@ void handleStatistics(
     DynamicArray<Transaction>& transactions
 ) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "                  PERSONAL FINANCE MANAGER > STATISTICS & REPORTS                       \n";
-    std::cout << "========================================================================================\n";
-    std::cout << "  [1] Time-based Summary (From Date A to Date B)\n";
-    std::cout << "  [2] Time & Wallet-based Breakdown\n";
-    std::cout << "  [3] Annual Income/Expense Overview (Multi-Year)\n";
-    std::cout << "  [4] Annual Income Breakdown by Income Source\n";
-    std::cout << "  [5] Annual Expense Breakdown by Expense Category\n";
-    std::cout << "  [6] View All Transactions History\n";
-    std::cout << "  [0] Return to Dashboard\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    printHeader("STATISTICS & REPORTS");
+    std::cout << "\n  " << Color::BOLD << Color::YELLOW << "[!] WORK IN PROGRESS" << Color::RESET << "\n";
+    std::cout << "  The Statistics & Reports module (Tasks 20 - 23) is currently being\n";
+    std::cout << "  developed by the Statistics Team (src/Statistics.cpp).\n\n";
+    std::cout << "  " << Color::CYAN << "[1]" << Color::RESET << " View All Transactions History\n";
+    std::cout << "  " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
+    std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice(" [?] Select report (0 - 6): ", 0, 6);
+    int choice = readSubmenuChoice("  ▸ Select option (0 - 1): ", 0, 1);
     if (choice == 0) {
         return;
     }
 
     if (choice == 1) {
-        reportTimeBasedSummary(transactions);
-        std::cout << "\n [SUCCESS] Time-based summary report generated successfully.\n";
-        pauseScreen();
-    } else if (choice == 2) {
-        reportWalletBreakdown(wallets, categories, sources, transactions);
-        std::cout << "\n [SUCCESS] Time and wallet breakdown report generated successfully.\n";
-        pauseScreen();
-    } else if (choice == 3) {
-        reportMultiYearOverview(transactions);
-        std::cout << "\n [SUCCESS] Multi-year overview report generated successfully.\n";
-        pauseScreen();
-    } else if (choice == 4) {
-        reportIncomeBreakdownBySource(sources, transactions);
-        std::cout << "\n [SUCCESS] Annual income breakdown report generated successfully.\n";
-        pauseScreen();
-    } else if (choice == 5) {
-        reportExpenseBreakdownByCategory(categories, transactions);
-        std::cout << "\n [SUCCESS] Annual expense breakdown report generated successfully.\n";
-        pauseScreen();
-    } else if (choice == 6) {
         printTransactionTable(transactions, wallets, categories, sources);
-        std::cout << "\n [SUCCESS] Transaction history displayed successfully.\n";
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Transaction history displayed successfully.\n";
         pauseScreen();
     }
 }
@@ -480,31 +439,29 @@ void handlePersistence(
     DynamicArray<RecurringTransaction>& recurringList
 ) {
     clearScreen();
-    std::cout << "========================================================================================\n";
-    std::cout << "                  PERSONAL FINANCE MANAGER > DATA PERSISTENCE                           \n";
-    std::cout << "========================================================================================\n";
-    std::cout << " Storage File: " << DATA_FILE << "\n\n";
-    std::cout << "  [1] Save Current Data to Disk\n";
-    std::cout << "  [2] Reload Data from Disk\n";
-    std::cout << "  [0] Return to Dashboard\n";
-    std::cout << "----------------------------------------------------------------------------------------\n";
+    printHeader("DATA PERSISTENCE & STORAGE");
+    std::cout << "  " << Color::GRAY << "Storage File: " << Color::WHITE << DATA_FILE << Color::RESET << "\n\n";
+    std::cout << "  " << Color::CYAN << "[1]" << Color::RESET << " Save Current Data to Disk\n";
+    std::cout << "  " << Color::CYAN << "[2]" << Color::RESET << " Reload Data from Disk\n";
+    std::cout << "  " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
+    std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice(" [?] Select option (0 - 2): ", 0, 2);
+    int choice = readSubmenuChoice("  ▸ Select option (0 - 2): ", 0, 2);
     if (choice == 0) {
         return;
     }
     if (choice == 1) {
         if (saveDataToFile(DATA_FILE, wallets, categories, sources, transactions, recurringList)) {
-            std::cout << "\n [SUCCESS] All financial data saved to '" << DATA_FILE << "' successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " All financial data saved to '" << DATA_FILE << "' successfully!\n";
         } else {
-            std::cout << "\n [ERROR] Failed to save financial data to '" << DATA_FILE << "'.\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Failed to save financial data to '" << DATA_FILE << "'.\n";
         }
         pauseScreen();
     } else if (choice == 2) {
         if (loadDataFromFile(DATA_FILE, wallets, categories, sources, transactions, recurringList)) {
-            std::cout << "\n [SUCCESS] All financial data reloaded from '" << DATA_FILE << "' successfully!\n";
+            std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " All financial data reloaded from '" << DATA_FILE << "' successfully!\n";
         } else {
-            std::cout << "\n [ERROR] Could not read '" << DATA_FILE << "' (missing file or invalid format).\n";
+            std::cout << "\n " << Color::BOLD << Color::RED << "[ERROR]" << Color::RESET << " Could not read '" << DATA_FILE << "' (missing file or invalid format).\n";
         }
         pauseScreen();
     }
@@ -518,10 +475,10 @@ void shutdownApp(
     DynamicArray<RecurringTransaction>& recurringList
 ) {
     saveDataToFile(DATA_FILE, wallets, categories, sources, transactions, recurringList);
-    std::cout << "\n [SUCCESS] All financial data saved. Exiting Personal Finance Manager. Goodbye!\n";
+    std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " All financial data saved. Exiting Personal Finance Manager. Goodbye!\n";
 }
 
 void handleInvalidChoice() {
-    std::cout << "\n [!] Invalid selection. Please enter a valid number from 0 to 7.\n";
+    std::cout << "\n " << Color::BOLD << Color::RED << "[!]" << Color::RESET << " Invalid selection. Please enter a valid number from 0 to 7.\n";
     pauseScreen();
 }

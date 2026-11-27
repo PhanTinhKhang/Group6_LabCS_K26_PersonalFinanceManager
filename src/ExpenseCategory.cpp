@@ -1,6 +1,9 @@
 #include "../include/DynamicArray.h"
 #include "../include/ExpenseCategory.h"
+#include "../include/UITheme.h"
 #include <string>
+#include <iostream>
+#include <iomanip>
 
 void set_name(ExpenseCategory &item)
 {
@@ -71,10 +74,24 @@ void del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item)
 void view(DynamicArray<ExpenseCategory> &storage)
 {
     int sz = storage.getSize();
+    if (sz == 0)
+    {
+        cout << Color::CYAN << "+------+------------------------------------------+\n";
+        cout << "|  ID  | Expense Category Name                    |\n";
+        cout << "+------+------------------------------------------+\n";
+        cout << "|  No active expense categories defined.          |\n";
+        cout << "+------+------------------------------------------+\n" << Color::RESET;
+        return;
+    }
+    cout << Color::CYAN << "+------+------------------------------------------+\n";
+    cout << "|  ID  | Expense Category Name                    |\n";
+    cout << "+------+------------------------------------------+\n" << Color::RESET;
     for (int i = 0; i < sz; i++)
     {
-        print(storage[i]);
+        cout << Color::CYAN << "| " << Color::YELLOW << right << setw(4) << storage[i].get_id() << Color::RESET
+             << Color::CYAN << " | " << Color::WHITE << left << setw(40) << storage[i].get_name() << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
+    cout << Color::CYAN << "+------+------------------------------------------+\n" << Color::RESET;
 }
 
 string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage)
