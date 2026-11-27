@@ -6,8 +6,10 @@
 #include "../include/RecurringTransaction.h"
 #include "../include/Dashboard.h"
 #include "../include/NavigationFlow.h"
+#include "../include/UITheme.h"
 
 int main() {
+    initConsole();
     DynamicArray<Wallet> wallets;
     DynamicArray<ExpenseCategory> categories;
     DynamicArray<IncomeSource> sources;

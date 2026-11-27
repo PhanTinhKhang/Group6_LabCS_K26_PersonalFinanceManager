@@ -1,4 +1,6 @@
 #include "../include/Wallet.h"
+#include "../include/Dashboard.h"
+#include "../include/UITheme.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -74,28 +76,30 @@ bool deleteWallet(DynamicArray<Wallet>& wallets, const int& id) {
 void viewWallets(DynamicArray<Wallet>& wallets) {
     int sz = wallets.getSize();
     if (sz == 0) {
-        cout << "No wallets found.\n";
+        cout << Color::CYAN << "+------+-------------+-------------------------+------------------------+\n";
+        cout << "| No.  | Wallet ID   | Wallet Name             | Current Balance        |\n";
+        cout << "+------+-------------+-------------------------+------------------------+\n";
+        cout << "|  No active wallets found.                                             |\n";
+        cout << "+------+-------------+-------------------------+------------------------+\n" << Color::RESET;
         return;
     }
 
-    cout << "\n+------+---------------+-----------------------+----------------------+\n";
-    cout << "| " << left << setw(4) << "No."
-         << " | " << setw(13) << "Wallet ID"
-         << " | " << setw(21) << "Wallet Name"
-         << " | " << right << setw(20) << "Balance (VND)" << " |\n";
-    cout << "+------+---------------+-----------------------+----------------------+\n";
+    cout << Color::CYAN << "+------+-------------+-------------------------+------------------------+\n";
+    cout << "| No.  | Wallet ID   | Wallet Name             | Current Balance        |\n";
+    cout << "+------+-------------+-------------------------+------------------------+\n" << Color::RESET;
 
-    cout << fixed << setprecision(2);
     for (int i = 0; i < sz; ++i) {
-        cout << "| " << left << setw(4) << (i + 1)
-             << " | " << setw(13) << wallets[i].get_ID()
-             << " | " << setw(21) << wallets[i].get_NAME()
-             << " | " << right << setw(20) << wallets[i].get_BALANCE() << " |\n";
+        string numStr = (i + 1 < 10 ? "0" : "") + to_string(i + 1);
+        cout << Color::CYAN << "|  " << Color::RESET << setw(2) << numStr << Color::CYAN << "  | "
+             << Color::YELLOW << left << setw(11) << wallets[i].get_ID() << Color::RESET << Color::CYAN << " | "
+             << Color::WHITE << left << setw(23) << wallets[i].get_NAME() << Color::RESET << Color::CYAN << " | "
+             << Color::BOLD << Color::GREEN << right << setw(22) << formatCurrency(wallets[i].get_BALANCE()) << Color::RESET << Color::CYAN << " |\n" << Color::RESET;
     }
 
-    cout << "+------+---------------+-----------------------+----------------------+\n";
-    cout << "Total Balance: " << fixed << setprecision(2)
-         << getTotalBalance(wallets) << " VND\n";
+    cout << Color::CYAN << "+------+-------------+-------------------------+------------------------+\n";
+    cout << "|  " << Color::BOLD << Color::WHITE << "TOTAL AGGREGATE BALANCE:" << Color::RESET << Color::CYAN << "                    | "
+         << Color::BOLD << Color::GREEN << right << setw(22) << formatCurrency(getTotalBalance(wallets)) << Color::RESET << Color::CYAN << " |\n";
+    cout << "+----------------------------------------------+------------------------+\n" << Color::RESET;
 }
 
 double getTotalBalance(DynamicArray<Wallet>& wallets) {
