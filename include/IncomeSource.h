@@ -24,13 +24,13 @@ void set_name(IncomeSource &item);
 
 bool search(int ID, DynamicArray<IncomeSource> &storage, int &idx);
 
-void print(const IncomeSource &item, ostream &fout);
+void print(const IncomeSource &item, ostream &fout = cout);
 
 bool add(DynamicArray<IncomeSource> &storage, IncomeSource item);
 
 bool del(DynamicArray<IncomeSource> &storage, IncomeSource item);
 
-void view(DynamicArray<IncomeSource> &storage, ostream &fout);
+void view(DynamicArray<IncomeSource> &storage, ostream &fout = cout);
 
 string getSourceNameById(int ID, DynamicArray<IncomeSource> &storage);
 

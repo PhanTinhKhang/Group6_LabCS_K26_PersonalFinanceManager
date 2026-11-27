@@ -24,13 +24,13 @@ void set_name(ExpenseCategory &item);
 
 bool search(int ID, DynamicArray<ExpenseCategory> &storage, int &idx);
 
-void print(ExpenseCategory item, ostream &fout);
+void print(ExpenseCategory item, ostream &fout = cout);
 
 bool add(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
 
 bool del(DynamicArray<ExpenseCategory> &storage, ExpenseCategory item);
 
-void view(DynamicArray<ExpenseCategory> &storage, ostream &fout);
+void view(DynamicArray<ExpenseCategory> &storage, ostream &fout = cout);
 
 string getCategoryNameById(int ID, DynamicArray<ExpenseCategory> &storage);
 
