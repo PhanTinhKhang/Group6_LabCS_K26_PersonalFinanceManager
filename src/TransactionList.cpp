@@ -23,11 +23,7 @@ void printTransactionTable(
 ){
     int size = list.getSize();
     if (size <= 0) {
-        std::cout << Color::CYAN << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
-        std::cout << "| No.  | Date       | Type      | Category / Source      | Wallet               | Amount (VND)           | Description                  |\n";
-        std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n";
-        std::cout << "|  No transactions found in this register.                                                                                              |\n";
-        std::cout << "+------+------------+-----------+------------------------+----------------------+------------------------+------------------------------+\n" << Color::RESET;
+        std::cout << "-> Transaction list is empty!\n";
         return;
     }
 
@@ -70,11 +66,7 @@ void printRecurringTransactionsTable(
 ) {
     int size = list.getSize();
     if (size <= 0) {
-        std::cout << Color::CYAN << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
-        std::cout << "|  ID  | Type      | Category / Source      | Wallet               | Amount (VND)           | Start Date   | Last Applied | Description                |\n";
-        std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n";
-        std::cout << "|  No recurring transaction rules registered.                                                                                                |\n";
-        std::cout << "+------+-----------+------------------------+----------------------+------------------------+--------------+--------------+----------------------------+\n" << Color::RESET;
+        std::cout << "-> Transaction list is empty!\n";
         return;
     }
 
