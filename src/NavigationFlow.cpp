@@ -4,6 +4,8 @@
 #include "../include/ExpenseRecord.h"
 #include "../include/InputValidator.h"
 #include "../include/UITheme.h"
+#include "../include/Statistics.h"
+#include "../include/WalletTransferUI.h"
 #include <iostream>
 
 static int readSubmenuChoice(const std::string& prompt, int minChoice, int maxChoice) {
@@ -149,11 +151,12 @@ void handleWalletManagement(DynamicArray<Wallet>& wallets) {
     std::cout << "\n  " << Color::CYAN << "[1]" << Color::RESET << " Create New Wallet\n";
     std::cout << "  " << Color::CYAN << "[2]" << Color::RESET << " Edit Wallet Name\n";
     std::cout << "  " << Color::CYAN << "[3]" << Color::RESET << " Delete Wallet\n";
-    std::cout << "  " << Color::CYAN << "[4]" << Color::RESET << " View Wallets Overview\n";
+    std::cout << "  " << Color::CYAN << "[4]" << Color::RESET << " Transfer Between Wallets\n";
+    std::cout << "  " << Color::CYAN << "[5]" << Color::RESET << " View Wallets Overview\n";
     std::cout << "  " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
     std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice("  ▸ Select option (0 - 4): ", 0, 4);
+    int choice = readSubmenuChoice("  ▸ Select option (0 - 5): ", 0, 5);
     if (choice == 0) {
         return;
     }
@@ -183,6 +186,8 @@ void handleWalletManagement(DynamicArray<Wallet>& wallets) {
         }
         pauseScreen();
     } else if (choice == 4) {
+        handleWalletsTransfer(wallets);
+    } else if (choice == 5) {
         std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Wallet overview displayed successfully.\n";
         pauseScreen();
     }
@@ -412,19 +417,41 @@ void handleStatistics(
 ) {
     clearScreen();
     printHeader("STATISTICS & REPORTS");
-    std::cout << "\n  " << Color::BOLD << Color::YELLOW << "[!] WORK IN PROGRESS" << Color::RESET << "\n";
-    std::cout << "  The Statistics & Reports module (Tasks 20 - 23) is currently being\n";
-    std::cout << "  developed by the Statistics Team (src/Statistics.cpp).\n\n";
-    std::cout << "  " << Color::CYAN << "[1]" << Color::RESET << " View All Transactions History\n";
+    std::cout << "  " << Color::CYAN << "[1]" << Color::RESET << " Time-based Summary (From Date A to Date B)\n";
+    std::cout << "  " << Color::CYAN << "[2]" << Color::RESET << " Time & Wallet-based Breakdown\n";
+    std::cout << "  " << Color::CYAN << "[3]" << Color::RESET << " Annual Income/Expense Overview (Multi-Year)\n";
+    std::cout << "  " << Color::CYAN << "[4]" << Color::RESET << " Annual Income Breakdown by Income Source\n";
+    std::cout << "  " << Color::CYAN << "[5]" << Color::RESET << " Annual Expense Breakdown by Expense Category\n";
+    std::cout << "  " << Color::CYAN << "[6]" << Color::RESET << " View All Transactions History\n";
     std::cout << "  " << Color::BOLD << Color::RED << "[0]" << Color::RESET << " Return to Dashboard\n";
     std::cout << Color::CYAN << "----------------------------------------------------------------------------------------\n" << Color::RESET;
 
-    int choice = readSubmenuChoice("  ▸ Select option (0 - 1): ", 0, 1);
+    int choice = readSubmenuChoice("  ▸ Select report (0 - 6): ", 0, 6);
     if (choice == 0) {
         return;
     }
 
     if (choice == 1) {
+        reportTimeBasedSummary(transactions);
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Time-based summary report generated successfully.\n";
+        pauseScreen();
+    } else if (choice == 2) {
+        reportWalletBreakdown(wallets, categories, sources, transactions);
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Time and wallet breakdown report generated successfully.\n";
+        pauseScreen();
+    } else if (choice == 3) {
+        reportMultiYearOverview(transactions);
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Multi-year overview report generated successfully.\n";
+        pauseScreen();
+    } else if (choice == 4) {
+        reportIncomeBreakdownBySource(sources, transactions);
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Annual income breakdown report generated successfully.\n";
+        pauseScreen();
+    } else if (choice == 5) {
+        reportExpenseBreakdownByCategory(categories, transactions);
+        std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Annual expense breakdown report generated successfully.\n";
+        pauseScreen();
+    } else if (choice == 6) {
         printTransactionTable(transactions, wallets, categories, sources);
         std::cout << "\n " << Color::BOLD << Color::GREEN << "[SUCCESS]" << Color::RESET << " Transaction history displayed successfully.\n";
         pauseScreen();
